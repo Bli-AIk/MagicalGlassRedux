@@ -3245,6 +3245,7 @@ function LightBattle:previousParty()
     self.encounter:onCharacterTurn(party, true)
 end
 
+---@deprecated Use `LightBattle:solidMeetsCollider` or `LightBattle:solidMeetsObject` instead
 function LightBattle:checkSolidCollision(collider)
     if NOCLIP then return false end
     Object.startCache()
@@ -3256,6 +3257,53 @@ function LightBattle:checkSolidCollision(collider)
     end
     for _, solid in ipairs(Game.stage:getObjects(Solid)) do
         if solid:collidesWith(collider) then
+            Object.endCache()
+            return true, solid
+        end
+    end
+    Object.endCache()
+    return false
+end
+
+
+--- Returns whether a Collider collides with a Solid or the arena
+---@param collider Collider
+---@return boolean          collided
+---@return Arena|Solid?     colliding_with
+function LightBattle:solidMeetsCollider(collider)
+    if NOCLIP then return false end
+    Object.startCache()
+    if self.arena then
+        if self.arena:meetsCollider(collider) then
+            Object.endCache()
+            return true, self.arena
+        end
+    end
+    for _, solid in ipairs(Game.stage:getObjects(Solid)) do
+        if solid:meetsCollider(collider) then
+            Object.endCache()
+            return true, solid
+        end
+    end
+    Object.endCache()
+    return false
+end
+
+--- Returns whether an Object collides with a Solid or the arena
+---@param object Object
+---@return boolean          collided
+---@return Arena|Solid?     colliding_with
+function LightBattle:solidMeetsObject(object)
+    if NOCLIP then return false end
+    Object.startCache()
+    if self.arena then
+        if self.arena:meetsObject(object) then
+            Object.endCache()
+            return true, self.arena
+        end
+    end
+    for _, solid in ipairs(Game.stage:getObjects(Solid)) do
+        if solid:meetsObject(object) then
             Object.endCache()
             return true, solid
         end
@@ -3862,6 +3910,10 @@ end
 
 function LightBattle:canDeepCopy()
     return false
+end
+
+function LightBattle:shouldDecreaseInvuln()
+    return self.encounter:shouldDecreaseInvuln()
 end
 
 return LightBattle

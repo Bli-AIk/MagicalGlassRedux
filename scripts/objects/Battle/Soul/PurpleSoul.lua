@@ -184,13 +184,13 @@ function PurpleSoul:doMovement()
     -- if the soul is on the string
     if self.state == "ON_STRING" then
         -- if the soul's collider detects it's on the current string
-        if self.collider:collidesWith(self.current_string.collider) then
+        if self.collider:meetsCollider(self.current_string.collider) then
             -- movement stuff
-            if (self.right_string_collider:collidesWith(self.current_string) or not self.limit_progress and self.progress < 1) and self.movement == 1 then
+            if (self.right_string_collider:meetsCollider(self.current_string) or not self.limit_progress and self.progress < 1) and self.movement == 1 then
                 self.progress = MathUtils.clamp(self.progress + self.movement_speed / self.current_string.len * DTMULT, 0, 1)
                 self.movement = 0
             end
-            if (self.left_string_collider:collidesWith(self.current_string) or not self.limit_progress and self.progress > 0) and self.movement == -1 then
+            if (self.left_string_collider:meetsCollider(self.current_string) or not self.limit_progress and self.progress > 0) and self.movement == -1 then
                 self.progress = MathUtils.clamp(self.progress - self.movement_speed / self.current_string.len * DTMULT, 0, 1)
                 self.movement = 0
             end
@@ -264,7 +264,7 @@ function PurpleSoul:update()
     super.update(self)
 
     -- if the soul doesn't have a string or is not on a string while not moving strings set its state to OUTSIDE_STRING
-    if not self.current_string or ((not self.collider:collidesWith(self.current_string.collider)) and not self.state == "MOVING") then
+    if not self.current_string or ((not self.collider:meetsCollider(self.current_string.collider)) and not self.state == "MOVING") then
         self.state = "OUTSIDE_STRING"
     end
 
@@ -326,7 +326,7 @@ function PurpleSoul:handleStringMovement()
         -- it(or more like a line equivalent to it) and stores them and their intersection points in two tables
         for _, obj in ipairs(Game.battle.children) do
             if obj:includes(PurpleString) then
-                if ((self.up_collider:collidesWith(obj.collider) and self.dir == -1) or (self.down_collider:collidesWith(obj.collider) and self.dir == 1)) and obj ~= self.current_string then
+                if ((self.up_collider:meetsCollider(obj.collider) and self.dir == -1) or (self.down_collider:meetsCollider(obj.collider) and self.dir == 1)) and obj ~= self.current_string then
                     local a = (math.rad(270) + self.rotation) + ((self.dir == 1 and math.pi) or 0)
                     local intersection_x, intersection_y = Utils.getLineIntersect(
                         simplify(self:lengthDirX(self.x, 4, a)),

@@ -48,7 +48,7 @@ function LightSoul:init(x, y, color)
     self.transitioning = Game.battle:getState() ~= "DEFENDING" or not self.visible
     self.speed = Game.battle.soul_speed
 
-    self.inv_timer = 0
+    Game:resetInvuln()
     self.inv_flash_timer = 0
 
     -- 1px movement increments
@@ -190,13 +190,13 @@ function LightSoul:moveXExact(amount, move_y)
         if not self.noclip then
             Object.uncache(self)
             Object.startCache()
-            local collided, target = Game.battle:checkSolidCollision(self)
+            local collided, target = Game.battle:solidMeetsObject(self)
             if self.slope_correction then
                 if collided and not (move_y > 0) then
                     for j = 1, 2 do
                         Object.uncache(self)
                         self.y = self.y - 1
-                        collided, target = Game.battle:checkSolidCollision(self)
+                        collided, target = Game.battle:solidMeetsObject(self)
                         if not collided then break end
                     end
                 end
@@ -205,7 +205,7 @@ function LightSoul:moveXExact(amount, move_y)
                     for j = 1, 2 do
                         Object.uncache(self)
                         self.y = self.y + 1
-                        collided, target = Game.battle:checkSolidCollision(self)
+                        collided, target = Game.battle:solidMeetsObject(self)
                         if not collided then break end
                     end
                 end
@@ -240,13 +240,13 @@ function LightSoul:moveYExact(amount, move_x)
         if not self.noclip then
             Object.uncache(self)
             Object.startCache()
-            local collided, target = Game.battle:checkSolidCollision(self)
+            local collided, target = Game.battle:solidMeetsObject(self)
             if self.slope_correction then
                 if collided and not (move_x > 0) then
                     for j = 1, 2 do
                         Object.uncache(self)
                         self.x = self.x - 1
-                        collided, target = Game.battle:checkSolidCollision(self)
+                        collided, target = Game.battle:solidMeetsObject(self)
                         if not collided then break end
                     end
                 end
@@ -255,7 +255,7 @@ function LightSoul:moveYExact(amount, move_x)
                     for j = 1, 2 do
                         Object.uncache(self)
                         self.x = self.x + 1
-                        collided, target = Game.battle:checkSolidCollision(self)
+                        collided, target = Game.battle:solidMeetsObject(self)
                         if not collided then break end
                     end
                 end
@@ -333,21 +333,16 @@ function LightSoul:update()
         self:doMovement()
     end
 
-    -- Bullet collision !!! Yay
-    if self.inv_timer > 0 then
-        self.inv_timer = MathUtils.approach(self.inv_timer, 0, DT)
-    end
-
     local collided_bullets = {}
     Object.startCache()
     for _, bullet in ipairs(Game.stage:getObjects(Bullet)) do
-        if bullet:collidesWith(self.collider) then
+        if bullet:meetsCollider(self.collider) then
             -- Store collided bullets to a table before calling onCollide
             -- to avoid issues with cacheing inside onCollide
             table.insert(collided_bullets, bullet)
         end
-        if self.inv_timer == 0 and Game.battle:getState() == "DEFENDING" then
-            if bullet:canGraze() and bullet:collidesWith(self.graze_collider) then
+        if not Game:hasInvulnerability() and Game.battle:getState() == "DEFENDING" then
+            if bullet:canGraze() and bullet:meetsCollider(self.graze_collider) then
                 local old_graze = bullet.grazed
                 if bullet.grazed then
                     Game:giveTension(bullet:getGrazeTension() * DT * self.graze_tp_factor)
@@ -378,7 +373,7 @@ function LightSoul:update()
     end
 
     -- Invulnerability frames flash faster in Undertale
-    if self.inv_timer > 0 then
+    if Game:hasInvulnerability() then
         self.inv_flash_timer = self.inv_flash_timer + DT
         local amt = math.floor(self.inv_flash_timer / (2 / 30))
         if (amt % 2) == 1 then
@@ -424,6 +419,10 @@ function LightSoul:setMonsterSoul(value)
             self.graze_sprite.texture = Assets.getTexture("player/graze")
         end
     end
+end
+
+function LightSoul:shouldDecreaseInvuln()
+    return true
 end
 
 return LightSoul

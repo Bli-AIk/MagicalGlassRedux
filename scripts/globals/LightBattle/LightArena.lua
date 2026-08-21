@@ -229,9 +229,9 @@ function LightArena:update()
         local angle_diff = self.clockwise and -(math.pi / 2) or (math.pi / 2)
         for _, line in ipairs(self.collider.colliders) do
             local angle
-            while soul:collidesWith(line) do
+            while soul:meetsCollider(line) do
                 if not angle then
-                    local x1, y1 = self:getRelativePos(line.x, line.y, Game.battle)
+                    local x1, y1 = self:getRelativePos(line.x1, line.y1, Game.battle)
                     local x2, y2 = self:getRelativePos(line.x2, line.y2, Game.battle)
                     angle = MathUtils.angle(x1, y1, x2, y2)
                 end
