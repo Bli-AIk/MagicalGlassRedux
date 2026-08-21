@@ -30,7 +30,7 @@ function Bullet:update()
     if self.remove_on_arena_collision then
         Object.uncache(self)
         Object.startCache()
-        local collided, target = Game.battle:checkSolidCollision(self)
+        local collided, target = Game.battle:solidMeetsObject(self)
         Object.endCache()
 
         if collided then
@@ -68,7 +68,7 @@ function Bullet:onCollide(soul)
         self.destroy_on_hit = true
     end
     if self:getType() == "blue" and soul:isMoving() or self:getType() == "orange" and not soul:isMoving() or not TableUtils.contains({ "blue", "orange" }, self:getType()) then
-        if soul.inv_timer == 0 then
+        if not Game:hasInvulnerability() then
             self:onDamage(soul)
             if self.destroy_on_hit then
                 self:remove()
@@ -123,7 +123,7 @@ function Bullet:onDamage(soul)
                 best_amount = equip_amount
             end
         end
-        soul.inv_timer = soul.inv_timer + (best_amount or 0)
+        Game:setInvulnFrames(Game.inv_frames + (best_amount or 0))
     end
 
     return battlers

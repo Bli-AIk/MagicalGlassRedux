@@ -47,7 +47,7 @@ function UndertaleShot:update()
 
     Object.startCache()
     for _, bullet in ipairs(bullets) do
-        if self:collidesWith(bullet) then
+        if self:meetsObject(bullet) then
             self.hit_bullets[bullet] = true
             local result, result_big = bullet:onYellowShot(self, self.damage)
             local real_result

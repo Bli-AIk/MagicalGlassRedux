@@ -281,4 +281,8 @@ function LightEncounter:canDeepCopy()
     return false
 end
 
+function LightEncounter:shouldDecreaseInvuln()
+    return Game.battle.soul ~= nil and Game.battle.soul:shouldDecreaseInvuln()
+end
+
 return LightEncounter

@@ -524,7 +524,7 @@ function GreenSoul:update()
     local blocked_bullets = {}
     Object.startCache()
     for _, bullet in ipairs(Game.stage:getObjects(Bullet)) do
-        if bullet:collidesWith(self.blocker.collider) then
+        if bullet:meetsCollider(self.blocker.collider) then
             table.insert(blocked_bullets, bullet)
         end
     end

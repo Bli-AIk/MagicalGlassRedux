@@ -30,7 +30,7 @@ function EncounterZone:update()
     -- Check if the player is currently in an encounter zone
     if Game.world.player and Game.state == "OVERWORLD" then
         for _, player in ipairs(Game.stage:getObjects(Player)) do
-            if self.collider:collidesWith(player) or self.type == "map" then
+            if self.collider:meetsObject(player) or self.type == "map" then
                 self.accepting = true
                 break
             end

@@ -25,12 +25,12 @@ function LightWorldBullet:getDebugInfo()
 end
 
 function LightWorldBullet:onCollide(soul)
-    if self.hazard_encounter and soul.inv_timer == 0 then
-        soul.inv_timer = self.inv_timer
+    if self.hazard_encounter and not Game:hasInvulnerability() then
+        Game:setInvulnFrames(self.inv_timer)
         Game:encounter(self.hazard_encounter, true, nil, nil, self.light)
     end
 
-    if soul.inv_timer ~= nil and self.destroy_on_hit then
+    if self.destroy_on_hit then
         self:remove()
     end
 end
