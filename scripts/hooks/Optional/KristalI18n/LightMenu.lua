@@ -49,8 +49,11 @@ local LIGHT_UI_TEXT_IDS = {
     ["CELL"] = "mgr_lightmenu_cell",
     ["INFO"] = "mgr_lightmenu_info",
     ["USE"] = "mgr_lightmenu_use",
-    ["TOSS"] = "mgr_lightmenu_toss",
-    ["KEY"] = "mgr_lightmenu_key",
+    -- Dark world item menu headers (MGR DarkItemMenu restyle; these strings
+    -- only appear there, engine or MGR draw, so the shared print wrapper is
+    -- safe).
+    ["TOSS"] = "mgr_darkmenu_toss",
+    ["KEY"] = "mgr_darkmenu_key",
     ["DISCARD"] = "mgr_lightmenu_discard",
     ["HP  "] = "mgr_lightmenu_hp",
     ["HP"] = "mgr_lightmenu_hp",
