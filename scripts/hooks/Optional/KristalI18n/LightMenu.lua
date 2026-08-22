@@ -42,6 +42,12 @@ local function loc(key, fallback, var)
     return fallback
 end
 
+local LIGHT_BATTLE_ACTION_IDS = {
+    spare = "mgr_action_spare",
+    defend = "mgr_action_defend",
+    flee = "mgr_action_flee",
+}
+
 local LIGHT_UI_TEXT_IDS = {
     -- LightMenu
     ["ITEM"] = "mgr_lightmenu_item",
@@ -64,6 +70,7 @@ local LIGHT_UI_TEXT_IDS = {
     -- LightActionButton:addMenuItem).
     ["Spare"] = "mgr_action_spare",
     ["Defend"] = "mgr_action_defend",
+    ["Flee"] = "mgr_action_flee",
     ["AT"] = "mgr_lightstat_at",
     ["DF"] = "mgr_lightstat_df",
     ["MAX"] = "mgr_lightstat_max",
@@ -147,6 +154,33 @@ local function localizeLightUIText(text)
 end
 
 if HasI18N then
+    -- LightBattleUI writes menu entries into Text objects with setText(), so
+    -- the graphics wrappers below never see them. Localize only for this draw
+    -- pass; action callbacks continue to receive the source label.
+    local LightBattleUI, battleui_super = HookSystem.hookScript(LightBattleUI)
+    function LightBattleUI:drawState(...)
+        local restored_names = {}
+        if Game and Game.battle then
+            for _, item in ipairs(Game.battle.menu_items or {}) do
+                local key = LIGHT_BATTLE_ACTION_IDS[item.special]
+                if key and type(item.name) == "string" then
+                    local source_name = item.name
+                    local localized_name = loc(key, source_name)
+                    if localized_name ~= source_name then
+                        restored_names[#restored_names + 1] = { item, source_name }
+                        item.name = localized_name
+                    end
+                end
+            end
+        end
+
+        local r = battleui_super.drawState(self, ...)
+        for _, entry in ipairs(restored_names) do
+            entry[1].name = entry[2]
+        end
+        return r
+    end
+
     -- kristal-i18n wraps these functions AFTER this adapter's load (its
     -- postInit), at which point the current global points at the i18n wrapper
     -- whose base is ours. To let the i18n CJK-spacing machinery see the
