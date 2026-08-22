@@ -104,10 +104,17 @@ end
 
 if HasI18N then
     local base_print = love.graphics.print
+    local base_printf = love.graphics.printf
     local base_align = Draw and Draw.printAlign
     local base_shadow = Draw and Draw.printShadow
     love.graphics.print = function(text, ...)
         return base_print(localizeLightUIText(text), ...)
+    end
+    -- Debug menu option labels render through love.graphics.printf (via
+    -- DebugSystem:printShadow/printAlign); without this wrapper they never
+    -- reach the translator.
+    love.graphics.printf = function(text, ...)
+        return base_printf(localizeLightUIText(text), ...)
     end
     if base_align then
         function Draw.printAlign(text, ...)
