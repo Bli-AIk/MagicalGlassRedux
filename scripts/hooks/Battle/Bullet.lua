@@ -4,8 +4,8 @@ function Bullet:init(x, y, texture)
     super.init(self, x, y, texture)
 
     if Game:isLight() then
-        -- Invulnerability timer to apply to the player when hit by this bullet
-        self.inv_timer = Kristal.getLibConfig("magical-glass", "default_invuln_time") / 30
+        -- Invulnerability frames to apply to the player when hit by this bullet
+        self.inv_frames = Kristal.getLibConfig("magical-glass", "default_invuln_time")
     end
 
     -- The type of the bullet (white, blue, orange, green...)
