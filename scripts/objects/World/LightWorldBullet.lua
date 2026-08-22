@@ -26,7 +26,7 @@ end
 
 function LightWorldBullet:onCollide(soul)
     if self.hazard_encounter and not Game:hasInvulnerability() then
-        Game:setInvulnFrames(self.inv_timer)
+        Game:setInvulnFrames(self:getInvulnFrames())
         Game:encounter(self.hazard_encounter, true, nil, nil, self.light)
     end
 
