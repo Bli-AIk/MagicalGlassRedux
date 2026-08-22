@@ -17,3 +17,11 @@ spare.png     spare_a.png   spare_d.png   spare_h.png
 ```
 
 尺寸/规格与原英文贴图一致即可（字符颜色可跟随英文相同配色，字宽按中文排版微调）。
+
+## 贴图来源
+
+本目录的 `act` / `item` / `fight` / `mercy` / `magic` 五个中文按钮贴图
+（含 `_a` / `_d` / `_h` 变体，由底图按英文原版配色规律生成）均改编自
+**Deltatraveler 汉化** 的按钮素材。
+
+来源出处：Deltatraveler（三角旅行者）中文汉化版。
