@@ -76,7 +76,8 @@ if HasI18N and Mod and Mod.libs and Mod.libs["magical-glass"] and HookSystem the
                 end
 
                 if type(label) == "string" then
-                    local type_word, item_id = label:match("^%((%u+)%)%| (.+)$")
+                    -- "(WEAPON) | mg/cracked_bat" — note the space before "|".
+                    local type_word, item_id = label:match("^%((%u+)%) %| (.+)$")
                     if type_word and item_id and Game then
                         label = "(" .. loc(TYPE_KEYS[type_word], type_word) .. ") | " .. item_id
                         local raw_name, raw_desc = type(desc) == "string" and desc:match('^"([^"]*)"%s*\n%s*(.*)$')
