@@ -60,6 +60,10 @@ local LIGHT_UI_TEXT_IDS = {
     ["LV"] = "mgr_lightmenu_lv",
     ["SPACE"] = "mgr_lightmenu_space",
     -- LightStatMenu
+    -- Light battle action labels (Mercy submenu built by MGR's
+    -- LightActionButton:addMenuItem).
+    ["Spare"] = "mgr_action_spare",
+    ["Defend"] = "mgr_action_defend",
     ["AT"] = "mgr_lightstat_at",
     ["DF"] = "mgr_lightstat_df",
     ["MAX"] = "mgr_lightstat_max",
@@ -107,6 +111,12 @@ local function localizeLightUIText(text)
     local item = text:match("^Use (.+) on$")
     if item then
         return loc("mgr_item_use_target", text, { item = item })
+    end
+    -- Item world/battle use lines built from raw fields
+    -- ("* You used the 黑暗汉堡."); the item name keeps its own localization.
+    local used = text:match("^%* You used the (.+)%.$")
+    if used then
+        return loc("mgr_item_used_target", text, { item = used })
     end
     -- LightStatMenu bottom hint: "PRESS [Z] TO VIEW SPELLS" (gamepad mode
     -- draws the key icon separately and stays English).
