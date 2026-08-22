@@ -57,11 +57,36 @@ if HasI18N and Mod and Mod.libs and Mod.libs["magical-glass"] and HookSystem the
         local orig_register_option = debug and debug.registerOption
         local orig_register_menu = debug and debug.registerMenu
 
+        -- Composed give-item entries: label "(ITEM)| light/cards", desc
+        -- '"Name"\nDescription'. MGR builds both from RAW item fields
+        -- (item.name / item.description), bypassing the i18n accessor hooks —
+        -- re-localize them here from the id carried in the label.
+        local TYPE_KEYS = {
+            ITEM = "mgr_debug_type_item",
+            WEAPON = "mgr_debug_type_weapon",
+            ARMOR = "mgr_debug_type_armor",
+            KEY = "mgr_debug_type_key",
+        }
+
         if debug and orig_register_option then
             function debug.registerOption(self, menu, label, desc, callback)
                 label = DEBUG_TEXT_IDS[label] and loc(DEBUG_TEXT_IDS[label], label) or label
                 if type(desc) == "string" then
                     desc = DEBUG_TEXT_IDS[desc] and loc(DEBUG_TEXT_IDS[desc], desc) or desc
+                end
+
+                if type(label) == "string" then
+                    local type_word, item_id = label:match("^%((%u+)%)%| (.+)$")
+                    if type_word and item_id and Game then
+                        label = "(" .. loc(TYPE_KEYS[type_word], type_word) .. ") | " .. item_id
+                        local raw_name, raw_desc = type(desc) == "string" and desc:match('^"([^"]*)"%s*\n%s*(.*)$')
+                        if raw_name then
+                            local name_key = "item_" .. item_id .. "_name"
+                            local desc_key = "item_" .. item_id .. "_description"
+                            desc = "\"" .. loc(name_key, raw_name) .. "\"\n" ..
+                                loc(desc_key, raw_desc ~= "" and raw_desc or raw_name)
+                        end
+                    end
                 end
                 return orig_register_option(self, menu, label, desc, callback)
             end
