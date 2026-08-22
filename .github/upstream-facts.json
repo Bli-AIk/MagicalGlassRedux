@@ -1,0 +1,14 @@
+{
+    "upstream": {
+        "repo": "FireRainV/Noelle-Libraries-Pack",
+        "branch": "main",
+        "path": "libraries/MagicalGlassRedux",
+        "ref": "f182f69",
+        "last_touch_sha": "f182f69",
+        "tree_sha": "b6684d07970c8dc83162a63b6395591e46fcc525",
+        "lib_version": "v5.0.1",
+        "engine_ver": "v0.10.0",
+        "id": "magical-glass",
+        "dependencies": []
+    }
+}
