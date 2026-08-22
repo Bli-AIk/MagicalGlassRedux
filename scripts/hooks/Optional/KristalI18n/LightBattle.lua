@@ -9,11 +9,63 @@ end
 
 local LightBattle, super = HookSystem.hookScript(LightBattle)
 
+local function hasLoc(key)
+    return HasI18N and Game and Game.hasStr and Game:hasStr(key)
+end
+
 local function callLoc(key, fallback, var)
-    if HasI18N and Game and Game.hasStr and Game:hasStr(key) then
+    if hasLoc(key) then
         return Game:loc(key, var)
     end
     return fallback
+end
+
+local SPARE_COLOR_TEXT_IDS = {
+    YELLOW = "mgr_battle_spare_color_yellow",
+}
+
+local function localizeBattleLine(line)
+    local who = line:match("^%* (.-) spared the enemies%.$")
+    if who then
+        return callLoc("mgr_battle_spared_enemies", line, { who = who })
+    end
+
+    local color, color_name = line:match("^%* But none of the enemies' names were %[color:(.-)%](.-)%[color:reset%]%.%.%.$")
+    if color then
+        local color_key = SPARE_COLOR_TEXT_IDS[color_name]
+        if color_key then
+            color_name = callLoc(color_key, color_name)
+        end
+        local colored_name = "[color:" .. color .. "]" .. color_name .. "[color:reset]"
+        return callLoc("mgr_battle_spared_enemies_not_yellow", line, { color = colored_name })
+    end
+
+    local user, item = line:match("^%* (.-) used the (.+)%.$")
+    if user then
+        return callLoc("mgr_battle_item_used", line, { who = user, item = item })
+    end
+
+    local maxed_who = line:match("^%* (.-)'s HP was maxed out%.$")
+    if maxed_who then
+        return callLoc("mgr_battle_hp_maxed", line, { who = maxed_who })
+    end
+    if line == "* Your HP was maxed out." then
+        return callLoc("mgr_battle_your_hp_maxed", line)
+    end
+
+    return line
+end
+
+local function localizeBattleText(text)
+    if type(text) == "table" then
+        for i, line in ipairs(text) do
+            text[i] = localizeBattleText(line)
+        end
+        return text
+    elseif type(text) == "string" then
+        return (text:gsub("[^\n]+", localizeBattleLine))
+    end
+    return text
 end
 
 local function refreshEnemies(battle)
@@ -74,9 +126,11 @@ if HasI18N then
         return super.commitAction(self, battler, action_type, target, data, extra)
     end
 
-    -- Victory summary strings built in LightBattle:onVictory ("* YOU WON!").
-    -- Reuse the framework battle_victory_* entries (xp/currency [var:]).
+    -- LightBattle writes dynamic results directly into its Text object, which
+    -- bypasses the graphics wrappers used by ordinary menus. Translate known
+    -- result templates here, including victory summaries from onVictory.
     function LightBattle:battleText(text, callback)
+        text = localizeBattleText(text)
         if type(text) == "string" then
             local xp, money, cur = text:match("^%* YOU WON!\n%* You earned (%d+) EXP and (%d+) (%S+)")
             if xp then
