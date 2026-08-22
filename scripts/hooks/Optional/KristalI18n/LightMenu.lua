@@ -19,6 +19,7 @@ local MENU_TEXT_IDS = {
     ["DISCARD"] = "mgr_lightmenu_discard",
     ["HP  "] = "mgr_lightmenu_hp",
     ["HP"] = "mgr_lightmenu_hp",
+    ["LV"] = "mgr_lightmenu_lv",
     ["SPACE"] = "mgr_lightmenu_space",
 }
 
