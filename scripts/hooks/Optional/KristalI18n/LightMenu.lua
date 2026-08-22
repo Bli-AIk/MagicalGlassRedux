@@ -103,7 +103,7 @@ local function localizeLightUIText(text)
     -- raw fields): "* Kris consumes the Bad Memory.\n* Kris lost 1HP."
     local line1, line2 = text:match("^(%* .-)%s*\n%s*(%* .+)$")
     if line1 and line2 then
-        local who, verb, what = line1:match("^%* (%S+) ([%a]+)s? the (.+)%.")
+        local who, verb, what = line1:match("^%* (%S+) ([%a]-)s? the (.+)%.")
         if who and verb and what then
             line1 = loc("mgr_item_light_use", line1, {
                 who = who, verb = loc("mgr_use_" .. verb, verb), item = what,
