@@ -1,9 +1,8 @@
 {
- // 数据来源：UT 汉化补丁 0.3.3 键值对提取版（由「真是滑稽了啊」提供；UT 汉化原作：好人汉化组）。
- // 其余为维护者建议条目（见审核清单）。
-
- // 格式约定：check 值不含前导 '* "名称" - ' 头部（显示层会重新拼接）；源文本字间空格已去除，
- // 中文间距由 kristal-i18n 处理；条目缺失时自动回退英文。
+ // From the UT 汉化补丁 0.3.3 key-value extraction (provided by 真是滑稽了啊;
+ // UT 汉化原作: 好人汉化组) + maintainer-proposed entries (marked in the
+ // review list). Check values are stored WITHOUT the leading '* "Name" - '
+ // header (the display layer re-adds it).
  "item_mg/cracked_bat_name": "破球棒",
  "item_mg/cracked_bat_seriousName": "球棒",
  "item_mg/cracked_bat_shortName": "破棒",
@@ -261,11 +260,11 @@
  "mgr_debug_enter_dark_shop_desc": "进入一家暗商店。",
  "mgr_debug_enter_light_shop": "进入光商店",
  "mgr_debug_enter_light_shop_desc": "进入一家光商店。",
- "mgr_debug_give_dark_item": "给予暗世界物品",
+ "mgr_debug_give_dark_item": "给予 暗世界 物品",
  "mgr_debug_give_dark_item_desc": "给予一个暗世界物品。",
  "mgr_debug_give_kristal_item": "给予 Kristal 物品",
  "mgr_debug_give_kristal_item_desc": "给予一个 Kristal 原生物品。",
- "mgr_debug_give_light_item": "给予光世界物品",
+ "mgr_debug_give_light_item": "给予 光世界 物品",
  "mgr_debug_give_light_item_desc": "给予一个光世界物品。",
  "mgr_debug_give_undertale_item": "给予 Undertale 物品",
  "mgr_debug_give_undertale_item_desc": "给予一个 Undertale 物品。",
