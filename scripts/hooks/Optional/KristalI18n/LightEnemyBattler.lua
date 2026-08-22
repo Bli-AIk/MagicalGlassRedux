@@ -63,7 +63,7 @@ if HasI18N then
         local r = super.init(self, ...)
         -- Run every library's registered refresher (this one + UMR's, which
         -- localizes turn texts, low/spare texts and the extra act names).
-        for _, lib in ipairs(Kristal.iterLibraries()) do
+        for _, lib in Kristal.iterLibraries() do
             local refresh = lib.i18n_refreshEnemy
             if type(refresh) == "function" then
                 refresh(self)
