@@ -31,16 +31,25 @@ function Spell:init()
 end
 
 function Spell:getCheck()
-    if type(self.check) == "table" then
+    -- MGR's generic Spell:init seeds "Example info" as a placeholder; spells
+    -- that don't define their own check (e.g. the engine's revivesong) fall
+    -- back to their description through the existing spell_<id>_description
+    -- keys, so both languages show real text.
+    local check = self.check
+    if type(check) == "string" and check:find("Example info", 1, true) then
+        check = self.description or check
+        return locChapter("spell_" .. self.id .. "_description", check)
+    end
+    if type(check) == "table" then
         local pages = {}
-        for i, page in ipairs(self.check) do
+        for i, page in ipairs(check) do
             local key = "spell_" .. self.id .. "_check"
             if i > 1 then key = key .. "_" .. i end
             pages[i] = locChapter(key, page)
         end
         return pages
     end
-    return locChapter("spell_" .. self.id .. "_check", self.check)
+    return locChapter("spell_" .. self.id .. "_check", check)
 end
 
 function Spell:onCheck()
