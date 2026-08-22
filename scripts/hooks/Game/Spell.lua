@@ -1,5 +1,22 @@
 local Spell, super = HookSystem.hookScript(Spell)
 
+-- Optional kristal-i18n: spell checks are MGR-only fields (the i18n Spell
+-- adapter covers name/description/castMessage). Localize per page like
+-- Item:getCheck; the ACT spell's check is chapter-scoped in the data, so
+-- keys get the same _chapter_<n> treatment as the i18n Spell adapter.
+local HasI18N = Mod and Mod.libs and Mod.libs["kristalI18n"] ~= nil
+local function loc(key, fallback)
+    if HasI18N and Game and Game.hasStr and Game:hasStr(key) then
+        return Game:loc(key)
+    end
+    return fallback
+end
+local function locChapter(key, fallback)
+    local chapter = tonumber(Game.chapter) or 1
+    chapter = math.max(1, math.min(5, chapter))
+    return loc(key .. "_chapter_" .. tostring(chapter), loc(key, fallback))
+end
+
 function Spell:init()
     super.init(self)
 
@@ -7,7 +24,16 @@ function Spell:init()
 end
 
 function Spell:getCheck()
-    return self.check
+    if type(self.check) == "table" then
+        local pages = {}
+        for i, page in ipairs(self.check) do
+            local key = "spell_" .. self.id .. "_check"
+            if i > 1 then key = key .. "_" .. i end
+            pages[i] = locChapter(key, page)
+        end
+        return pages
+    end
+    return locChapter("spell_" .. self.id .. "_check", self.check)
 end
 
 function Spell:onCheck()
