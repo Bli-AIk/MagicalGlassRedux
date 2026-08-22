@@ -30,21 +30,31 @@ function Spell:init()
     self.check = "Example info"
 end
 
--- Spell check text mirrors the spell description (MGR data keeps both
--- fields; only `check` drives the INFO window). Rendering therefore reads
--- the existing spell_<id>_description keys (en/zh) as one page — spell
--- descriptions are 1-2 lines, so paging isn't needed — and falls back to
--- the merged MGR fields when no key exists. `self.check` itself stays an
--- upstream MGR API data field, untouched.
+-- `self.check` (a string or an array of pages) is the upstream MGR API and
+-- always drives the INFO window's paging. Language data is an optional
+-- override layer: spell_<id>_check / spell_<id>_check_2 keys win when
+-- present; otherwise falling back is automatic:
+--  - page-array checks: each page shows the raw MGR text (still paginated,
+--    no overflow);
+--  - single-line checks: existing spell_<id>_description entries (the text
+--    matches the check; chapter-scoped for the ACT spell), then raw text;
+--  - "Example info" is only MGR's generic Spell:init placeholder, treated
+--    as "no check given" -> description entries.
 function Spell:getCheck()
-    local text = self.description
     local check = self.check
-    if type(check) == "table" then
-        text = table.concat(check, "\n")
-    elseif type(check) == "string" and not check:find("Example info", 1, true) then
-        text = check
+    if type(check) == "string" and check:find("Example info", 1, true) then
+        return locChapter("spell_" .. self.id .. "_description", self.description or check)
+    elseif type(check) == "table" then
+        local pages = {}
+        for i, page in ipairs(check) do
+            local key = "spell_" .. self.id .. "_check"
+            if i > 1 then key = key .. "_" .. i end
+            pages[i] = locChapter(key, page)
+        end
+        return pages
     end
-    return locChapter("spell_" .. self.id .. "_description", text)
+    return locChapter("spell_" .. self.id .. "_check",
+        locChapter("spell_" .. self.id .. "_description", check))
 end
 
 function Spell:onCheck()
