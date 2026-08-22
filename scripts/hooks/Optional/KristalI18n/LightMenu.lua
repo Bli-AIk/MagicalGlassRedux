@@ -103,31 +103,83 @@ local function localizeLightUIText(text)
 end
 
 if HasI18N then
+    -- kristal-i18n wraps these functions AFTER this adapter's load (its
+    -- postInit), at which point the current global points at the i18n wrapper
+    -- whose base is ours. To let the i18n CJK-spacing machinery see the
+    -- TRANSLATED text, delegates go back through the *current* global (depth
+    -- 1); a second re-entry reaches the raw base and ends the cycle. Before
+    -- the i18n install (global == us) we fall straight to the base.
+    local depth = 0
+
     local base_print = love.graphics.print
     local base_printf = love.graphics.printf
     local base_align = Draw and Draw.printAlign
     local base_shadow = Draw and Draw.printShadow
-    love.graphics.print = function(text, ...)
-        return base_print(localizeLightUIText(text), ...)
+
+    local my_print
+    my_print = function(text, ...)
+        depth = depth + 1
+        local r
+        if depth > 1 or love.graphics.print == my_print then
+            r = base_print(text, ...)
+        else
+            r = love.graphics.print(localizeLightUIText(text), ...)
+        end
+        depth = depth - 1
+        return r
     end
+    love.graphics.print = my_print
+
     -- Debug menu option labels render through love.graphics.printf (via
     -- DebugSystem:printShadow/printAlign); without this wrapper they never
     -- reach the translator.
-    love.graphics.printf = function(text, ...)
-        return base_printf(localizeLightUIText(text), ...)
-    end
-    if base_align then
-        function Draw.printAlign(text, ...)
-            return base_align(localizeLightUIText(text), ...)
+    local my_printf
+    my_printf = function(text, ...)
+        depth = depth + 1
+        local r
+        if depth > 1 or love.graphics.printf == my_printf then
+            r = base_printf(text, ...)
+        else
+            r = love.graphics.printf(localizeLightUIText(text), ...)
         end
+        depth = depth - 1
+        return r
     end
+    love.graphics.printf = my_printf
+
+    if base_align then
+        local my_align
+        my_align = function(text, ...)
+            depth = depth + 1
+            local r
+            if depth > 1 or Draw.printAlign == my_align then
+                r = base_align(text, ...)
+            else
+                r = Draw.printAlign(localizeLightUIText(text), ...)
+            end
+            depth = depth - 1
+            return r
+        end
+        Draw.printAlign = my_align
+    end
+
     if base_shadow then
+        local my_shadow
+        my_shadow = function(text, ...)
+            depth = depth + 1
+            local r
+            if depth > 1 or Draw.printShadow == my_shadow then
+                r = base_shadow(text, ...)
+            else
+                r = Draw.printShadow(localizeLightUIText(text), ...)
+            end
+            depth = depth - 1
+            return r
+        end
         -- Debug-system menus (MGR's give-item/encounter/shop selections) draw
         -- labels via printShadow; this makes the mgr_debug_* strings live at
         -- draw time, independent of register-time state or language switches.
-        function Draw.printShadow(text, ...)
-            return base_shadow(localizeLightUIText(text), ...)
-        end
+        Draw.printShadow = my_shadow
     end
 end
 
