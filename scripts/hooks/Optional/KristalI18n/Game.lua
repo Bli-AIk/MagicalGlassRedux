@@ -5,11 +5,12 @@
 --    registered by Lib:registerDebugOptions — engine duplicate labels are
 --    already covered by the i18n static-text map).
 local HasI18N = Mod and Mod.libs and Mod.libs["kristalI18n"] ~= nil
-local Game, super = HookSystem.hookScript(Game)
+local BaseGame = Game
+local Game, super = HookSystem.hookScript(BaseGame)
 
 local function loc(key, fallback)
-    if HasI18N and Game and Game.hasStr and Game:hasStr(key) then
-        return Game:loc(key)
+    if HasI18N and BaseGame and BaseGame.hasStr and BaseGame:hasStr(key) then
+        return BaseGame:loc(key)
     end
     return fallback
 end
@@ -18,8 +19,8 @@ if HasI18N then
     function Game:setLanguage(...)
         local r = super.setLanguage(self, ...)
         local lib = Mod and Mod.libs and Mod.libs["magical-glass"]
-        if lib and lib.i18n_refreshEnemy and Game.battle then
-            for _, enemy in ipairs(Game.battle.enemies or {}) do
+        if lib and lib.i18n_refreshEnemy and BaseGame.battle then
+            for _, enemy in ipairs(BaseGame.battle.enemies or {}) do
                 lib.i18n_refreshEnemy(enemy)
             end
         end
@@ -53,7 +54,7 @@ if HasI18N and Mod and Mod.libs and Mod.libs["magical-glass"] and HookSystem the
         ["Give an Undertale item."] = "mgr_debug_give_undertale_item_desc",
     }
 
-    HookSystem.hook(Lib, "registerDebugOptions", function(orig, debug, ...)
+    HookSystem.hook(Lib, "registerDebugOptions", function(orig, lib, debug, ...)
         local orig_register_option = debug and debug.registerOption
         local orig_register_menu = debug and debug.registerMenu
 
@@ -69,7 +70,7 @@ if HasI18N and Mod and Mod.libs and Mod.libs["magical-glass"] and HookSystem the
         }
 
         if debug and orig_register_option then
-            function debug.registerOption(self, menu, label, desc, callback)
+            function debug.registerOption(self, menu, label, desc, callback, ...)
                 label = DEBUG_TEXT_IDS[label] and loc(DEBUG_TEXT_IDS[label], label) or label
                 if type(desc) == "string" then
                     desc = DEBUG_TEXT_IDS[desc] and loc(DEBUG_TEXT_IDS[desc], desc) or desc
@@ -78,7 +79,7 @@ if HasI18N and Mod and Mod.libs and Mod.libs["magical-glass"] and HookSystem the
                 if type(label) == "string" then
                     -- "(WEAPON) | mg/cracked_bat" — note the space before "|".
                     local type_word, item_id = label:match("^%((%u+)%) %| (.+)$")
-                    if type_word and item_id and Game then
+                    if type_word and item_id and BaseGame then
                         label = "(" .. loc(TYPE_KEYS[type_word], type_word) .. ") | " .. item_id
                         local raw_name, raw_desc = type(desc) == "string" and desc:match('^"([^"]*)"%s*\n%s*(.*)$')
                         if raw_name then
@@ -89,7 +90,7 @@ if HasI18N and Mod and Mod.libs and Mod.libs["magical-glass"] and HookSystem the
                         end
                     end
                 end
-                return orig_register_option(self, menu, label, desc, callback)
+                return orig_register_option(self, menu, label, desc, callback, ...)
             end
         end
 
@@ -102,7 +103,7 @@ if HasI18N and Mod and Mod.libs and Mod.libs["magical-glass"] and HookSystem the
             end
         end
 
-        return orig(debug, ...)
+        return orig(lib, debug, ...)
     end)
 end
 
