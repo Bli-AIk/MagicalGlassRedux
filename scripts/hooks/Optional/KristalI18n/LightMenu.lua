@@ -11,6 +11,23 @@
 local HasI18N = Mod and Mod.libs and Mod.libs["kristalI18n"] ~= nil
 local LightMenu, super = HookSystem.hookScript(LightMenu)
 
+-- Context for the "Use <item> on" target bar: MGR's LightItemMenu:update
+-- does call super.update, so a class-level hook here is reachable (unlike
+-- the draw methods). Capture the item being targeted so the draw-time
+-- translator can pick the equip vs. use wording.
+local target_item_type = nil
+if HasI18N then
+    local LightItemMenu, itemmenu_super = HookSystem.hookScript(LightItemMenu)
+    function LightItemMenu:update(...)
+        local r = itemmenu_super.update(self, ...)
+        if self.state == "PARTYSELECT" and Game and Game.inventory then
+            local item = Game.inventory:getItem(self.storage, self.item_selecting)
+            target_item_type = item and item.type or nil
+        end
+        return r
+    end
+end
+
 local function loc(key, fallback, var)
     if HasI18N and Game and Game.hasStr and Game:hasStr(key) then
         return Game:loc(key, var)
@@ -77,6 +94,9 @@ local function localizeLightUIText(text)
     end
     local item = text:match("^Use (.+) on$")
     if item then
+        if target_item_type == "weapon" or target_item_type == "armor" then
+            return loc("mgr_item_equip_on", text, { item = item })
+        end
         return loc("mgr_item_use_target", text, { item = item })
     end
     if text == "Use" then
