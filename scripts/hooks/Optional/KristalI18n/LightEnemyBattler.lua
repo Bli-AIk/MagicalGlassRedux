@@ -8,6 +8,13 @@
 -- translation (Game:hasStr). Without kristalI18n this script only registers
 -- the shared refresh helper on the library table and does nothing else.
 local HasI18N = Mod and Mod.libs and Mod.libs["kristalI18n"] ~= nil
+-- Optional runtime switch: the main mod can disable the whole library via
+-- mod.json config ({"magical-glass": {"enabled": false}}); see README.
+if Mod and Mod.libs and Mod.libs["magical-glass"] and Kristal.getLibConfig and
+    Kristal.getLibConfig("magical-glass", "enabled") == false then
+    return LightEnemyBattler
+end
+
 local LightEnemyBattler, super = HookSystem.hookScript(LightEnemyBattler)
 
 local XACT_KEYS = {

@@ -1,3 +1,10 @@
+-- Optional runtime switch: the main mod can disable the whole library via
+-- mod.json config ({"magical-glass": {"enabled": false}}); see README.
+if Mod and Mod.libs and Mod.libs["magical-glass"] and Kristal.getLibConfig and
+    Kristal.getLibConfig("magical-glass", "enabled") == false then
+    return Spell
+end
+
 local Spell, super = HookSystem.hookScript(Spell)
 
 -- Optional kristal-i18n: spell checks are MGR-only fields (the i18n Spell

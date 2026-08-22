@@ -9,6 +9,13 @@
 -- so every string still passes through this translator first (its map only
 -- hits known MGR strings, all others pass through untouched).
 local HasI18N = Mod and Mod.libs and Mod.libs["kristalI18n"] ~= nil
+-- Optional runtime switch: the main mod can disable the whole library via
+-- mod.json config ({"magical-glass": {"enabled": false}}); see README.
+if Mod and Mod.libs and Mod.libs["magical-glass"] and Kristal.getLibConfig and
+    Kristal.getLibConfig("magical-glass", "enabled") == false then
+    return LightMenu
+end
+
 local LightMenu, super = HookSystem.hookScript(LightMenu)
 
 -- Context for the "Use <item> on" target bar: MGR's LightItemMenu:update

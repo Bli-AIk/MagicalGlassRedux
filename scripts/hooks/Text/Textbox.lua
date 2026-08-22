@@ -1,3 +1,10 @@
+-- Optional runtime switch: the main mod can disable the whole library via
+-- mod.json config ({"magical-glass": {"enabled": false}}); see README.
+if Mod and Mod.libs and Mod.libs["magical-glass"] and Kristal.getLibConfig and
+    Kristal.getLibConfig("magical-glass", "enabled") == false then
+    return Textbox
+end
+
 local Textbox, super = HookSystem.hookScript(Textbox)
 
 function Textbox:init(x, y, width, height, default_font, default_font_size, battle_box)

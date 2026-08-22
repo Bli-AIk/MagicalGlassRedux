@@ -18,6 +18,12 @@
 
     "config": {
 
+        ///// Runtime enable switch
+        // Main mods can override this from their mod.json ("config":
+        // {"magical-glass": {"enabled": false}}) to disable the library
+        // cleanly (no hooks, no registration), leaving Mod.libs present.
+        "enabled": true,
+
         ///// Default Battle System
         // If an encounter isn't forcing a battle system, the system set here will be used
         // as a fallback.
