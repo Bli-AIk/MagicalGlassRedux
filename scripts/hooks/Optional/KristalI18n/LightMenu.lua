@@ -94,12 +94,6 @@ local function localizeLightUIText(text)
     end
     local item = text:match("^Use (.+) on$")
     if item then
-        -- Item type captured by the LightItemMenu adapter (update chain).
-        local item_type = Mod and Mod.libs and Mod.libs["magical-glass"]
-            and Mod.libs["magical-glass"].i18n_target_item_type
-        if item_type == "weapon" or item_type == "armor" then
-            return loc("mgr_item_equip_on", text, { item = item })
-        end
         return loc("mgr_item_use_target", text, { item = item })
     end
     if text == "Use" then
