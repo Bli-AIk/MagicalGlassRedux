@@ -96,6 +96,12 @@ local function localizeLightUIText(text)
     if item then
         return loc("mgr_item_use_target", text, { item = item })
     end
+    -- LightStatMenu bottom hint: "PRESS [Z] TO VIEW SPELLS" (gamepad mode
+    -- draws the key icon separately and stays English).
+    local key = text:match("^PRESS (%S+) TO VIEW SPELLS$")
+    if key then
+        return loc("mgr_lightmenu_spells_prompt", text, { key = key })
+    end
     if text == "Use" then
         return loc("mgr_item_use", text)
     end

@@ -1,5 +1,16 @@
 local LightStatMenu, super = HookSystem.hookScript(LightStatMenu)
 
+-- Light-stat labels translate through the optional KristalI18n adapter; the
+-- value column is positioned from the *actual* label width instead of a
+-- fixed x so CJK labels (wider once letter-spaced) do not overlap the value.
+local HasI18N = Mod and Mod.libs and Mod.libs["kristalI18n"] ~= nil
+local function loc(key, fallback)
+    if HasI18N and Game and Game.hasStr and Game:hasStr(key) then
+        return Game:loc(key)
+    end
+    return fallback
+end
+
 -- Shows more infomation in the stats menu like magic stat, kills, spells, portrait and text
 -- The stat menu can cycle though all current party members
 -- When playing with more than one party member, a menu will open when attempting to use a spell, just like in Deltatraveler
@@ -286,13 +297,16 @@ function LightStatMenu:draw()
         local offset = 0
         if self.show_magic then
             offset = 16
-            love.graphics.print("MG", 4, 228 - offset)
-            love.graphics.print(MAG .. " (" .. party:getEquipmentBonus("magic") .. ")", 44, 228 - offset)
+            local label = loc("mgr_lightstat_mg", "MG")
+            love.graphics.print(label, 4, 228 - offset)
+            love.graphics.print(MAG .. " (" .. party:getEquipmentBonus("magic") .. ")", 4 + self.font:getWidth(label) + 16, 228 - offset)
         end
-        love.graphics.print("AT", 4, 164 - offset)
-        love.graphics.print(ATK .. " (" .. party:getEquipmentBonus("attack") .. ")", 44, 164 - offset)
-        love.graphics.print("DF", 4, 196 - offset)
-        love.graphics.print(DEF .. " (" .. party:getEquipmentBonus("defense") .. ")", 44, 196 - offset)
+        local label = loc("mgr_lightstat_at", "AT")
+        love.graphics.print(label, 4, 164 - offset)
+        love.graphics.print(ATK .. " (" .. party:getEquipmentBonus("attack") .. ")", 4 + self.font:getWidth(label) + 16, 164 - offset)
+        label = loc("mgr_lightstat_df", "DF")
+        love.graphics.print(label, 4, 196 - offset)
+        love.graphics.print(DEF .. " (" .. party:getEquipmentBonus("defense") .. ")", 4 + self.font:getWidth(label) + 16, 196 - offset)
         love.graphics.print("EXP: " .. party:getLightEXP(), 172, 164)
         love.graphics.print("NEXT: " .. exp_needed, 172, 196)
 
