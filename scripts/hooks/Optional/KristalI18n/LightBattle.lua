@@ -9,6 +9,13 @@ end
 
 local LightBattle, super = HookSystem.hookScript(LightBattle)
 
+local function callLoc(key, fallback, var)
+    if HasI18N and Game and Game.hasStr and Game:hasStr(key) then
+        return Game:loc(key, var)
+    end
+    return fallback
+end
+
 local function refreshEnemies(battle)
     for _, enemy in ipairs(battle.enemies or {}) do
         for _, lib in Kristal.iterLibraries() do
@@ -65,6 +72,23 @@ if HasI18N then
             end
         end
         return super.commitAction(self, battler, action_type, target, data, extra)
+    end
+
+    -- Victory summary strings built in LightBattle:onVictory ("* YOU WON!").
+    -- Reuse the framework battle_victory_* entries (xp/currency [var:]).
+    function LightBattle:battleText(text, callback)
+        if type(text) == "string" then
+            local xp, money, cur = text:match("^%* YOU WON!\n%* You earned (%d+) EXP and (%d+) (%S+)")
+            if xp then
+                text = callLoc("battle_victory_with_exp", text, { xp = xp, money = money, currency = cur })
+            else
+                local money, cur, who = text:match("^%* YOU WON!\n%* You earned (%d+) (%S+)%.%s*\n%* (%S+) became stronger%.")
+                if money then
+                    text = callLoc("battle_victory_stronger", text, { money = money, currency = cur, stronger = who })
+                end
+            end
+        end
+        return super.battleText(self, text, callback)
     end
 
     function LightBattle:processAction(action)
