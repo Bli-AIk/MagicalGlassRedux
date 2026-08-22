@@ -63,6 +63,14 @@ Translation sources (see `lang/zh_hans.json` provenance comments):
   — overrides where the light-world UI overlaps
 - Fork-uncovered strings require maintainer review before translation
 
+**Chinese fallback font** — `assets/fonts/small.json` overrides the engine
+`small` font settings to add a Chinese fallback font
+([fusion-pixel-font](https://github.com/TakWolf/fusion-pixel-font), 8px
+monospaced `zh_hans`, SIL OFL 1.1 — see
+`assets/fonts/LICENSE-fusion-pixel-font.txt`). ASCII glyphs keep the original
+`small` font; only missing Chinese glyphs fall back, so e.g. the
+`PRESS [Z] TO VIEW SPELLS` hint renders with a proper 8px pixel CJK face.
+
 ## License
 
 **License split** (important — see `LICENSE-UPSTREAM.md`, `LICENSE-MIT`,
@@ -75,6 +83,10 @@ Translation sources (see `lang/zh_hans.json` provenance comments):
   FireRainV, SadDiamondMan, Azrael, Trashcat, Annie, vitellary, TheSkerch);
   upstream published it **without a license grant**. No open-source license
   is claimed for it here.
+- *Third-party assets* — the fusion-pixel-font binary under `assets/fonts/`
+  is © TakWolf, licensed under the **SIL Open Font License 1.1**
+  (`assets/fonts/LICENSE-fusion-pixel-font.txt`), not covered by the fork
+  license.
 - *Fork code* — 0.11-dev port fixes, the kristal-i18n adapter, CI, and docs —
   is **dual-licensed MIT OR Apache-2.0, at your option**.
 - The split follows `git log`: every commit up to and including
