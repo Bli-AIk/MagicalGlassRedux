@@ -99,6 +99,22 @@ local function localizeLightUIText(text)
     if text == "Use" then
         return loc("mgr_item_use", text)
     end
+    -- Light battle use lines (MGR Item:getLightBattleText composes these from
+    -- raw fields): "* Kris consumes the Bad Memory.\n* Kris lost 1HP."
+    local line1, line2 = text:match("^(%* .-)%s*\n%s*(%* .+)$")
+    if line1 and line2 then
+        local who, verb, what = line1:match("^%* (%S+) ([%a]+)s? the (.+)%.")
+        if who and verb and what then
+            line1 = loc("mgr_item_light_use", line1, {
+                who = who, verb = loc("mgr_use_" .. verb, verb), item = what,
+            })
+        end
+        local lost_who, lost_amount = line2:match("^%* (%S+) lost ([%d%.]+)HP%.$")
+        if lost_who and lost_amount then
+            line2 = loc("mgr_item_light_lost_hp", line2, { who = lost_who, amount = lost_amount })
+        end
+        return line1 .. "\n" .. line2
+    end
     return text
 end
 
