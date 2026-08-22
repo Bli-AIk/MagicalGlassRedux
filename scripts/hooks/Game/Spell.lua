@@ -40,10 +40,32 @@ end
 --    matches the check; chapter-scoped for the ACT spell), then raw text;
 --  - "Example info" is only MGR's generic Spell:init placeholder, treated
 --    as "no check given" -> description entries.
+-- Auto-matched descriptions are one string, but the engine spells that take
+-- this path (no self.check) can have multi-paragraph text; a single page can
+-- overflow the INFO window. Split on paragraph breaks — a line starting with
+-- a non-space, non-asterisk char begins a new page; indented lines stay with
+-- their paragraph (engine/DialogueText indentation semantics).
+local function toPages(text)
+    local pages, cur = {}, {}
+    for line in (text .. "\n"):gmatch("(.-)\n") do
+        if #cur > 0 and line:find("^[^%s*]") then
+            table.insert(pages, table.concat(cur, "\n"))
+            cur = {}
+        end
+        table.insert(cur, line)
+    end
+    if #cur > 0 then
+        table.insert(pages, table.concat(cur, "\n"))
+    end
+    return pages
+end
+
 function Spell:getCheck()
     local check = self.check
     if type(check) == "string" and check:find("Example info", 1, true) then
-        return locChapter("spell_" .. self.id .. "_description", self.description or check)
+        local text = locChapter("spell_" .. self.id .. "_description", self.description or check)
+        local pages = toPages(text)
+        return #pages > 1 and pages or text
     elseif type(check) == "table" then
         local pages = {}
         for i, page in ipairs(check) do
