@@ -29,13 +29,23 @@ if HasI18N then
     function LightItemMenu:draw(...)
         local args = { ... }
         local original_print = love.graphics.print
+        local original_align = Draw and Draw.printAlign
         love.graphics.print = function(text, ...)
             return original_print(localizeItemMenuText(text), ...)
+        end
+        if original_align then
+            -- The "Use <item> on" target bar is drawn via Draw.printAlign.
+            function Draw.printAlign(text, ...)
+                return original_align(localizeItemMenuText(text), ...)
+            end
         end
         local ok, result = xpcall(function()
             return super.draw(self, unpack(args))
         end, debug.traceback)
         love.graphics.print = original_print
+        if original_align then
+            Draw.printAlign = original_align
+        end
         if not ok then
             error(result)
         end
