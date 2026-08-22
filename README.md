@@ -37,6 +37,25 @@ Complementary libraries (optional):
 - [kristal-i18n](https://github.com/Bli-AIk/kristal-i18n) — localization
   framework (see below).
 
+## Runtime enable switch
+
+The library is always discovered once it is in `libraries/`, but a main mod
+can disable it cleanly from its `mod.json` (`config.magical-glass.enabled` —
+the key is read as a normal lib config, so `lib.json`'s default of `true`
+can be overridden without touching the library):
+
+```json
+"config": {
+    "magical-glass": { "enabled": false }
+}
+```
+
+When disabled: the lib table is a no-op, every hook file bails out, and no
+content is registered — `Mod.libs["magical-glass"]` still exists, so
+dependent code using existence guards (e.g. the optional kristal-i18n
+adapter, UndertaleMonstersRecreation) stays safe. To disable the monsters
+library as well, add `"undertale_monsters_recreation": { "enabled": false }`.
+
 ## Usage
 
 Register content through the `MG_EVENT` registry (e.g. `onRegisterLightEncounters`,

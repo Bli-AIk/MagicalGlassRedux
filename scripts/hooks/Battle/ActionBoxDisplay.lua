@@ -1,3 +1,10 @@
+-- Optional runtime switch: the main mod can disable the whole library via
+-- mod.json config ({"magical-glass": {"enabled": false}}); see README.
+if Mod and Mod.libs and Mod.libs["magical-glass"] and Kristal.getLibConfig and
+    Kristal.getLibConfig("magical-glass", "enabled") == false then
+    return ActionBoxDisplay
+end
+
 local ActionBoxDisplay, super = HookSystem.hookScript(ActionBoxDisplay)
 
  -- Fixes an issue where the health bar will still get longer after going beyond battlers' maximum HP + MGR Karma
