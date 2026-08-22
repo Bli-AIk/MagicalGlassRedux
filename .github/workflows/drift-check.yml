@@ -1,0 +1,37 @@
+name: drift-check
+
+on:
+  schedule:
+    - cron: '0 2 * * *'    # daily 漂移检测：每日 02:00 UTC（10:00 东八）
+    - cron: '30 2 2 * *'   # monthly 兜底：每月 2 号 02:30 UTC（10:30 东八）
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      FACTS: .github/upstream-facts.json
+    steps:
+      - uses: actions/checkout@v4
+      - name: Determine run mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            CRON="$(jq -r .schedule < "$GITHUB_EVENT_PATH")"
+            if [ "$CRON" = "30 2 2 * *" ]; then
+              echo "mode=monthly" >> "$GITHUB_OUTPUT"
+            else
+              echo "mode=daily" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "mode=monthly" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Run drift check
+        run: bash .github/scripts/drift-check.sh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_MODE: ${{ steps.mode.outputs.mode }}
