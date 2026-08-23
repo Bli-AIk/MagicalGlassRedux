@@ -68,18 +68,6 @@ git submodule add https://github.com/Bli-AIk/MagicalGlassRedux.git \
 
 > ⚠️ 库不存在时**不要**调用 `Kristal.getLibConfig("magical-glass", ...)`，会报错。
 
-## 运行时开关
-
-库只要在 `libraries/` 里就会被发现，但主 mod 可以在自己的 `mod.json` 中干净地关掉它（`config.magical-glass.enabled`——该键按普通 lib 配置读取，因此不用改库文件就能覆盖 `lib.json` 的默认值 `true`）：
-
-```json
-"config": {
-    "magical-glass": { "enabled": false }
-}
-```
-
-关闭后：lib 表为 no-op，所有 hook 文件直接退出，不注册任何内容——`Mod.libs["magical-glass"]` 依然存在，所以用存在性守卫的依赖代码（可选的 kristal-i18n 适配层、UndertaleMonstersRecreation）仍然安全。要同时关闭怪物库，再加 `"undertale_monsters_recreation": { "enabled": false }`。
-
 ## kristal-i18n 支持（可选）
 
 当加载了 kristal-i18n（`kristalI18n`）时，本库自动本地化其 UI 字符串（光世界商店、光世界菜单、动作按钮、敌人名/检查文本），经 `Game:loc` + `Game:hasStr` 守卫；并按语言携带资源覆盖于 `assets/sprites/lang/<lang>/...`（如中文战斗按钮贴图）。没有 kristal-i18n 时一切不生效，保持上游英文。语言数据位于 `lang/`，由 kristal-i18n 自动合并。

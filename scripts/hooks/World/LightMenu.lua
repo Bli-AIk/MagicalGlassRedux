@@ -1,11 +1,13 @@
--- Optional runtime switch: the main mod can disable the whole library via
--- mod.json config ({"magical-glass": {"enabled": false}}); see README.
-if Mod and Mod.libs and Mod.libs["magical-glass"] and Kristal.getLibConfig and
-    Kristal.getLibConfig("magical-glass", "enabled") == false then
-    return LightMenu
-end
 
 local LightMenu, super = HookSystem.hookScript(LightMenu)
+
+local function loc(key, fallback, vars)
+    local i18n = Mod and Mod.libs and Mod.libs["kristalI18n"]
+    if i18n and Game and Game.hasStr and Game:hasStr(key) then
+        return Game:loc(key, vars)
+    end
+    return fallback
+end
 
 -- Prevents an issue where party select menus would overlap with the box stats text
 function LightMenu:draw()
@@ -32,8 +34,10 @@ function LightMenu:draw()
     love.graphics.print(chara:getShortName(), 46, 60 + offset)
 
     love.graphics.setFont(self.font_small)
-    love.graphics.print("LV" .. "  " .. chara:getLightLV(), 46, 100 + offset)
-    love.graphics.print("HP  " .. chara:getHealth() .. "/" .. chara:getStat("health"), 46, 118 + offset)
+    love.graphics.print(loc("mgr_lightmenu_lv", "LV") .. "  " .. chara:getLightLV(), 46, 100 + offset)
+    love.graphics.print(loc("mgr_lightstat_hp_total", "HP  " .. chara:getHealth() .. "/" .. chara:getStat("health"), {
+        hp = chara:getHealth() .. "/" .. chara:getStat("health"),
+    }), 46, 118 + offset)
     if Kristal.getLibConfig("magical-glass", "undertale_menu_display") then
         love.graphics.print(Game:getConfig("lightCurrencyShort"), 46, 136 + offset)
         love.graphics.print(Game.lw_money, 82, 136 + offset)
@@ -47,16 +51,16 @@ function LightMenu:draw()
     else
         Draw.setColor(PALETTE["world_text"])
     end
-    love.graphics.print("ITEM", 84, 188 + (36 * 0))
+    love.graphics.print(loc("mgr_lightmenu_item", "ITEM"), 84, 188 + (36 * 0))
     Draw.setColor(PALETTE["world_text"])
-    love.graphics.print("STAT", 84, 188 + (36 * 1))
+    love.graphics.print(loc("mgr_lightmenu_stat", "STAT"), 84, 188 + (36 * 1))
     if Game:getFlag("has_cell_phone", false) then
         if #Game.world.calls > 0 then
             Draw.setColor(PALETTE["world_text"])
         else
             Draw.setColor(PALETTE["world_gray"])
         end
-        love.graphics.print("CELL", 84, 188 + (36 * 2))
+        love.graphics.print(loc("mgr_lightmenu_cell", "CELL"), 84, 188 + (36 * 2))
     end
 
     if self.state == "MAIN" then

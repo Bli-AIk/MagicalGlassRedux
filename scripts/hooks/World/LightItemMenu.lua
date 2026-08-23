@@ -1,11 +1,13 @@
--- Optional runtime switch: the main mod can disable the whole library via
--- mod.json config ({"magical-glass": {"enabled": false}}); see README.
-if Mod and Mod.libs and Mod.libs["magical-glass"] and Kristal.getLibConfig and
-    Kristal.getLibConfig("magical-glass", "enabled") == false then
-    return LightItemMenu
-end
 
 local LightItemMenu, super = HookSystem.hookScript(LightItemMenu)
+
+local function loc(key, fallback, vars)
+    local i18n = Mod and Mod.libs and Mod.libs["kristalI18n"]
+    if i18n and Game and Game.hasStr and Game:hasStr(key) then
+        return Game:loc(key, vars)
+    end
+    return fallback
+end
 
 -- When playing with more than one party member, a menu will open when attempting to use an item, just like in Deltatraveler
 function LightItemMenu:init()
@@ -206,10 +208,10 @@ function LightItemMenu:draw()
         else
             Draw.setColor(PALETTE["world_gray"])
         end
-        love.graphics.print("USE", 20, 284)
+        love.graphics.print(loc("mgr_lightmenu_use", "USE"), 20, 284)
         Draw.setColor(PALETTE["world_text"])
-        love.graphics.print("INFO", 116, 284)
-        love.graphics.print("DROP", 230, 284)
+        love.graphics.print(loc("mgr_lightmenu_info", "INFO"), 116, 284)
+        love.graphics.print(loc("mgr_lightmenu_discard", "DROP"), 230, 284)
     end
 
     Draw.setColor(Game:getSoulColor())
@@ -232,7 +234,9 @@ function LightItemMenu:draw()
         local two_by_two = Mod.libs["moreparty"] and Mod.libs["moreparty"]:getTwoByTwo(party_count) or false
         local boxes_per_row = two_by_two and 2 or per_row
 
-        Draw.printAlign("Use " .. item:getName() .. " on", 150, 231, "center")
+        Draw.printAlign(loc("mgr_item_use_target", "Use " .. item:getName() .. " on", {
+            item = item:getName(),
+        }), 150, 231, "center")
 
         self.view_start_row = self.view_start_row or 0
 

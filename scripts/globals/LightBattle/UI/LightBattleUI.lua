@@ -1,3 +1,17 @@
+local function loc(key, fallback)
+    local i18n = Mod and Mod.libs and Mod.libs["kristalI18n"]
+    if i18n and Game and Game.hasStr and Game:hasStr(key) then
+        return Game:loc(key)
+    end
+    return fallback
+end
+
+local ACTION_TEXT_IDS = {
+    spare = "mgr_action_spare",
+    defend = "mgr_action_defend",
+    flee = "mgr_action_flee",
+}
+
 local LightBattleUI, super = Class(Object)
 
 function LightBattleUI:init()
@@ -322,6 +336,9 @@ function LightBattleUI:drawState()
             elseif item.shortname then
                 name = item.shortname
             end
+            if type(name) == "string" and ACTION_TEXT_IDS[item.special] then
+                name = loc(ACTION_TEXT_IDS[item.special], name)
+            end
 
             if heads > 0 or icons_at_beginning == false then
                 menu_text:setPosition(text_offset + 58 + (x * (240 + extra_offset[2])), 15 + (y * 32))
@@ -414,15 +431,15 @@ function LightBattleUI:drawState()
             if self.style == "deltarune" then
                 love.graphics.setFont(font_main)
                 if Game.battle.state_reason ~= "XACT" then
-                    love.graphics.print("HP", arena_ox + 400, arena_oy - 10, 0, 1, 0.5)
+                    love.graphics.print(loc("mgr_lightmenu_hp", "HP"), arena_ox + 400, arena_oy - 10, 0, 1, 0.5)
                 end
-                love.graphics.print("MERCY", arena_ox + 500, arena_oy - 10, 0, 1, 0.5)
+                love.graphics.print(loc("mgr_lightstat_mercy", "MERCY"), arena_ox + 500, arena_oy - 10, 0, 1, 0.5)
             elseif self.style == "deltatraveler" then
                 love.graphics.setFont(font_main)
                 if Game.battle.state_reason ~= "XACT" then
-                    love.graphics.print("HP", arena_ox + 412, arena_oy - 15, 0, 1, 0.75)
+                    love.graphics.print(loc("mgr_lightmenu_hp", "HP"), arena_ox + 412, arena_oy - 15, 0, 1, 0.75)
                 end
-                love.graphics.print("MERCY", arena_ox + 502, arena_oy - 15, 0, 1, 0.75)
+                love.graphics.print(loc("mgr_lightstat_mercy", "MERCY"), arena_ox + 502, arena_oy - 15, 0, 1, 0.75)
             end
         end
 

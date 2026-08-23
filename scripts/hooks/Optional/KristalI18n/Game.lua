@@ -1,19 +1,13 @@
 -- Optional kristal-i18n adapter:
--- 1) Refresh MGR enemy texts on language switch (LightEnemyBattler registers
---    `i18n_refreshEnemy` on the magical-glass library table).
+-- 1) Refresh MGR enemy texts on language switch.
 -- 2) Translate MGR's debug menu additions (encounter/shop/give-item labels
 --    registered by Lib:registerDebugOptions — engine duplicate labels are
 --    already covered by the i18n static-text map).
 local HasI18N = Mod and Mod.libs and Mod.libs["kristalI18n"] ~= nil
 local BaseGame = Game
--- Optional runtime switch: the main mod can disable the whole library via
--- mod.json config ({"magical-glass": {"enabled": false}}); see README.
-if Mod and Mod.libs and Mod.libs["magical-glass"] and Kristal.getLibConfig and
-    Kristal.getLibConfig("magical-glass", "enabled") == false then
-    return BaseGame
-end
 
 local Game, super = HookSystem.hookScript(BaseGame)
+local _, I18N = Kristal.executeLibScript("magical-glass", "scripts/i18n")
 
 local function loc(key, fallback)
     if HasI18N and BaseGame and BaseGame.hasStr and BaseGame:hasStr(key) then
@@ -25,10 +19,9 @@ end
 if HasI18N then
     function Game:setLanguage(...)
         local r = super.setLanguage(self, ...)
-        local lib = Mod and Mod.libs and Mod.libs["magical-glass"]
-        if lib and lib.i18n_refreshEnemy and BaseGame.battle then
+        if BaseGame.battle then
             for _, enemy in ipairs(BaseGame.battle.enemies or {}) do
-                lib.i18n_refreshEnemy(enemy)
+                I18N.refreshEnemy(enemy)
             end
         end
         return r

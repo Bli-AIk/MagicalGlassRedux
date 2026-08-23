@@ -1,9 +1,3 @@
--- Optional runtime switch: the main mod can disable the whole library via
--- mod.json config ({"magical-glass": {"enabled": false}}); see README.
-if Mod and Mod.libs and Mod.libs["magical-glass"] and Kristal.getLibConfig and
-    Kristal.getLibConfig("magical-glass", "enabled") == false then
-    return LightStatMenu
-end
 
 local LightStatMenu, super = HookSystem.hookScript(LightStatMenu)
 
@@ -286,8 +280,10 @@ function LightStatMenu:draw()
 
     Draw.setColor(PALETTE["world_text"])
 
-    love.graphics.print("LV" .. "  " .. party:getLightLV(), 4, 68)
-    love.graphics.print("HP  " .. party:getHealth() .. " / " .. party:getStat("health"), 4, 100)
+    love.graphics.print(loc("mgr_lightstat_lv", "LV") .. "  " .. party:getLightLV(), 4, 68)
+    love.graphics.print(loc("mgr_lightstat_hp_total", "HP  " .. party:getHealth() .. " / " .. party:getStat("health"), {
+        hp = party:getHealth() .. " / " .. party:getStat("health"),
+    }), 4, 100)
 
     if self.state == "STATS" then
         local exp_needed = math.max(0, party:getLightEXPNeeded(party:getLightLV() + 1) - party:getLightEXP())
@@ -314,8 +310,8 @@ function LightStatMenu:draw()
         label = loc("mgr_lightstat_df", "DF")
         love.graphics.print(label, 4, 196 - offset)
         love.graphics.print(DEF .. " (" .. party:getEquipmentBonus("defense") .. ")", 4 + self.font:getWidth(label) + 16, 196 - offset)
-        love.graphics.print("EXP: " .. party:getLightEXP(), 172, 164)
-        love.graphics.print("NEXT: " .. exp_needed, 172, 196)
+        love.graphics.print(loc("mgr_lightstat_exp", "EXP: ") .. party:getLightEXP(), 172, 164)
+        love.graphics.print(loc("mgr_lightstat_next", "NEXT: ") .. exp_needed, 172, 196)
 
         local weapon_name = "None"
         local armor_name = "None"
@@ -328,21 +324,26 @@ function LightStatMenu:draw()
             armor_name = party:getArmor(1):getEquipDisplayName()
         end
 
-        love.graphics.print("WEAPON: " .. weapon_name, 4, 256)
-        love.graphics.print("ARMOR: " .. armor_name, 4, 288)
+        love.graphics.print(loc("mgr_lightstat_weapon", "WEAPON: ") .. weapon_name, 4, 256)
+        love.graphics.print(loc("mgr_lightstat_armor", "ARMOR: ") .. armor_name, 4, 288)
 
         love.graphics.print(Game:getConfig("lightCurrency"):upper() .. ": " .. Game.lw_money, 4, 328)
         if Mod.libs["magical-glass"].kills > 20 then
-            love.graphics.print("KILLS: " .. Mod.libs["magical-glass"].kills, 172, 328)
+            love.graphics.print(loc("mgr_lightstat_kills", "KILLS: ") .. Mod.libs["magical-glass"].kills, 172, 328)
         end
 
         if self.show_magic then
             love.graphics.setFont(self.font_small)
             if Input.usingGamepad() then
-                Draw.printAlign("PRESS    TO VIEW SPELLS", 150, 368, "center")
+                Draw.printAlign(loc("mgr_lightmenu_spells_prompt", "PRESS    TO VIEW SPELLS", {
+                    key = "   ",
+                }), 150, 368, "center")
                 Draw.draw(Input.getTexture("confirm"), 100, 366)
             else
-                Draw.printAlign("PRESS " .. Input.getText("confirm") .. " TO VIEW SPELLS", 150, 368, "center")
+                local key = Input.getText("confirm")
+                Draw.printAlign(loc("mgr_lightmenu_spells_prompt", "PRESS " .. key .. " TO VIEW SPELLS", {
+                    key = key,
+                }), 150, 368, "center")
             end
         end
     else
@@ -484,9 +485,9 @@ function LightStatMenu:draw()
             if self.state ~= "SPELLS" and not self:canCast(spells[self.spell_selecting]) then
                 Draw.setColor(PALETTE["world_gray"])
             end
-            love.graphics.print("USE", 20 + 32, 340)
+            love.graphics.print(loc("mgr_lightmenu_use", "USE"), 20 + 32, 340)
             Draw.setColor(PALETTE["world_text"])
-            love.graphics.print("INFO", 230 - 32, 340)
+            love.graphics.print(loc("mgr_lightmenu_info", "INFO"), 230 - 32, 340)
         end
     end
 end

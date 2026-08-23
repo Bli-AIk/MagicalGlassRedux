@@ -68,18 +68,6 @@ Defaults live in `lib.json`; read them with `Kristal.getLibConfig("magical-glass
 
 > ⚠️ Do **not** call `Kristal.getLibConfig("magical-glass", ...)` when the library is absent — it errors.
 
-## Runtime Enable Switch
-
-The library is always discovered once it is in `libraries/`, but a main mod can disable it cleanly from its `mod.json` (`config.magical-glass.enabled` — the key is read as a normal lib config, so `lib.json`'s default of `true` can be overridden without touching the library):
-
-```json
-"config": {
-    "magical-glass": { "enabled": false }
-}
-```
-
-When disabled: the lib table is a no-op, every hook file bails out, and no content is registered — `Mod.libs["magical-glass"]` still exists, so dependent code using existence guards (e.g. the optional kristal-i18n adapter, UndertaleMonstersRecreation) stays safe. To disable the monsters library as well, add `"undertale_monsters_recreation": { "enabled": false }`.
-
 ## kristal-i18n Support (optional)
 
 When the kristal-i18n library (`kristalI18n`) is loaded, this library auto-localizes its UI strings (light shop, light menus, action buttons, enemy names/check texts) through `Game:loc` with `Game:hasStr` guards, and ships per-language assets under `assets/sprites/lang/<lang>/...` (e.g. Chinese battle button sprites). Without kristal-i18n, nothing is patched and everything stays in upstream English. Language data lives in `lang/` and is merged by kristal-i18n automatically.

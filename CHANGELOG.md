@@ -18,6 +18,10 @@ All notable changes to this fork are documented here, following
 - Kristal 0.11-dev API port (based on Stevenson89's `Noelle-Libraries-Pack-v11-dev`
   commit `77bf47c`).
 - Optional kristal-i18n adapter + `lang/` data + localized assets.
+- Keep the adapter's item lookup and live enemy refresh private to MGR, and
+  localize MGR UI at its own draw boundaries rather than wrapping global draw
+  functions.
+- Remove the unsupported runtime `enabled` switch.
 - CI: Kristal update check + upstream drift check.
 
 <!-- release-please will manage fork release notes from here -->

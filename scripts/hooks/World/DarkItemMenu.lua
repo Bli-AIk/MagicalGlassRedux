@@ -1,11 +1,13 @@
--- Optional runtime switch: the main mod can disable the whole library via
--- mod.json config ({"magical-glass": {"enabled": false}}); see README.
-if Mod and Mod.libs and Mod.libs["magical-glass"] and Kristal.getLibConfig and
-    Kristal.getLibConfig("magical-glass", "enabled") == false then
-    return DarkItemMenu
-end
 
 local DarkItemMenu, super = HookSystem.hookScript(DarkItemMenu)
+
+local function loc(key, fallback)
+    local i18n = Mod and Mod.libs and Mod.libs["kristalI18n"]
+    if i18n and Game and Game.hasStr and Game:hasStr(key) then
+        return Game:loc(key)
+    end
+    return fallback
+end
 
 -- Allows holding an infinte amount of items in your dark inventory
 function DarkItemMenu:init()
@@ -29,7 +31,11 @@ end
 function DarkItemMenu:draw()
     love.graphics.setFont(self.font)
 
-    local headers = { "USE", "TOSS", "KEY" }
+    local headers = {
+        loc("mgr_lightmenu_use", "USE"),
+        loc("mgr_darkmenu_toss", "TOSS"),
+        loc("mgr_darkmenu_key", "KEY"),
+    }
 
     for i, name in ipairs(headers) do
         if self.state == "MENU" then

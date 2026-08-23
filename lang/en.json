@@ -466,7 +466,7 @@
  "mgr_lightstat_at": "AT",
  "mgr_lightstat_df": "DF",
  "mgr_lightstat_exp": "EXP: ",
- "mgr_lightstat_hp_total": "HP [var:hp]",
+ "mgr_lightstat_hp_total": "HP  [var:hp]",
  "mgr_lightstat_kills": "KILLS: ",
  "mgr_lightstat_lv": "LV",
  "mgr_lightstat_max": "MAX",
@@ -502,5 +502,6 @@
  "mgr_use_eat": "eats",
  "mgr_use_used": "used",
  "mgr_xact_standard": "Standard",
- "mgr_xact_x_action": "X-Action"
+ "mgr_xact_x_action": "X-Action",
+ "mgr_act_check": "Check"
 }

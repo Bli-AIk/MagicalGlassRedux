@@ -1,9 +1,5 @@
 -- Optional kristal-i18n adapter: default light-battle flee messages.
 local HasI18N = Mod and Mod.libs and Mod.libs["kristalI18n"] ~= nil
-if Mod and Mod.libs and Mod.libs["magical-glass"] and Kristal.getLibConfig and
-    Kristal.getLibConfig("magical-glass", "enabled") == false then
-    return LightEncounter
-end
 
 local LightEncounter, super = HookSystem.hookScript(LightEncounter)
 

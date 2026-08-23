@@ -1,3 +1,49 @@
+local function loc(key, fallback, vars)
+    local i18n = Mod and Mod.libs and Mod.libs["kristalI18n"]
+    if i18n and Game and Game.hasStr and Game:hasStr(key) then
+        return Game:loc(key, vars)
+    end
+    return fallback
+end
+
+local SHOP_TEXT_IDS = {
+    ["Buy"] = "mgr_shop_buy",
+    ["Sell"] = "mgr_shop_sell",
+    ["Talk"] = "mgr_shop_talk",
+    ["Exit"] = "mgr_shop_exit",
+    ["Return"] = "mgr_shop_return",
+    ["Sell Items"] = "mgr_shop_sell_items",
+    ["Sell Box A Items"] = "mgr_shop_sell_box_a",
+    ["Sell Box B Items"] = "mgr_shop_sell_box_b",
+    ["SOLD OUT"] = "mgr_shop_sold_out",
+    ["--- SOLD OUT ---"] = "mgr_shop_sold_out_banner",
+    ["Not\nenough\nmoney."] = "mgr_shop_too_expensive",
+    ["You're\ncarrying\ntoo much."] = "mgr_shop_no_space",
+    ["Out of\nstock."] = "mgr_shop_sold_out_item",
+    ["Sell\nmenu\ntext"] = "mgr_shop_menu_text",
+    ["Yes"] = "mgr_shop_yes",
+    ["No"] = "mgr_shop_no",
+    ["Sold\neverything\ntext"] = "mgr_shop_sold_everything",
+    ["Empty\ninventory\ntext"] = "mgr_shop_empty_inventory",
+    ["* Empty inventory text"] = "mgr_shop_empty_inventory_encounter",
+    ["Talk\ntext"] = "mgr_shop_talk_text",
+}
+
+local function localizeShopText(text)
+    if type(text) ~= "string" then
+        return text
+    end
+    local key = SHOP_TEXT_IDS[text]
+    if key then
+        return loc(key, text)
+    end
+    local item, money = text:match("^Sell (.+) for (.+) %?$")
+    if item and money then
+        return loc("mgr_shop_sell_confirm", text, { item = item, money = money })
+    end
+    return text
+end
+
 local LightShop, super = Class(Object)
 
 function LightShop:init()
@@ -288,10 +334,12 @@ function LightShop:getIndentString()
 end
 
 function LightShop:setDialogueText(text, no_voice)
+    text = localizeShopText(text)
     self.dialogue_text:setText(no_voice and text or self:getVoicedText(text))
 end
 
 function LightShop:setRightText(text, no_voice)
+    text = localizeShopText(text)
     self.right_text:setText(no_voice and text or self:getVoicedText(text))
 end
 
@@ -1073,7 +1121,7 @@ function LightShop:drawMainMenu()
     Draw.setColor(COLORS.white)
 
     for i = 1, #self.menu_options do
-        love.graphics.print(self.menu_options[i][1], 480, 220 + (i * 40))
+        love.graphics.print(localizeShopText(self.menu_options[i][1]), 480, 220 + (i * 40))
     end
 
     Draw.setColor(Game:getSoulColor())
@@ -1099,7 +1147,7 @@ function LightShop:drawBuyItems(draw_soul)
 
         if i == return_index then
             Draw.setColor(COLORS.white)
-            love.graphics.print("Exit", text_pos, y)
+            love.graphics.print(localizeShopText("Exit"), text_pos, y)
         elseif item == nil then
             -- If there's no item there, show empty slot
             Draw.setColor(COLORS.dkgray)
@@ -1107,7 +1155,7 @@ function LightShop:drawBuyItems(draw_soul)
         elseif item.options["stock"] and (item.options["stock"] <= 0) then
             -- If we've depleted the stock, show a "sold out" message
             Draw.setColor(COLORS.gray)
-            love.graphics.print("--- SOLD OUT ---", text_pos, y)
+            love.graphics.print(localizeShopText("--- SOLD OUT ---"), text_pos, y)
         else
             -- Valid item, show it
             Draw.setColor(item.options["color"])
@@ -1160,7 +1208,7 @@ function LightShop:drawItemInfo(box_y, item, item_options)
 end
 
 function LightShop:drawItemDescription(text, x, y)
-    love.graphics.print(text, x, y)
+    love.graphics.print(localizeShopText(text), x, y)
 end
 
 function LightShop:drawItemHealAmount(amount, x, y)
@@ -1251,11 +1299,11 @@ function LightShop:drawBuyConfirm()
     )
 
     for i = 1, #lines do
-        love.graphics.print(lines[i], 460, 420 - 160 + ((i - 1) * 30))
+        love.graphics.print(localizeShopText(lines[i]), 460, 420 - 160 + ((i - 1) * 30))
     end
 
-    love.graphics.print(self.buy_confirmation_yes_text, 480, 420 - 80)
-    love.graphics.print(self.buy_confirmation_no_text, 480, 420 - 80 + 30)
+    love.graphics.print(localizeShopText(self.buy_confirmation_yes_text), 480, 420 - 80)
+    love.graphics.print(localizeShopText(self.buy_confirmation_no_text), 480, 420 - 80 + 30)
 end
 
 function LightShop:drawSellMenu()
@@ -1266,10 +1314,10 @@ function LightShop:drawSellMenu()
     love.graphics.setFont(self.font)
 
     for i, v in ipairs(self.sell_options) do
-        love.graphics.print(v[1], 80, 220 + (i * 40))
+        love.graphics.print(localizeShopText(v[1]), 80, 220 + (i * 40))
     end
 
-    love.graphics.print("Return", 80, 220 + ((#self.sell_options + 1) * 40))
+    love.graphics.print(localizeShopText("Return"), 80, 220 + ((#self.sell_options + 1) * 40))
 end
 
 function LightShop:drawSellItems()
@@ -1325,7 +1373,7 @@ function LightShop:drawSellItems()
 
     Draw.setColor(COLORS.white)
 
-    love.graphics.print("Exit", 60, 420)
+    love.graphics.print(localizeShopText("Exit"), 60, 420)
 
     if self:getSellMaxPage() > 1 then
         love.graphics.print("PAGE " .. self.sell_page, 285, 420)
@@ -1345,18 +1393,17 @@ function LightShop:drawSellConfirm()
 
     Draw.setColor(COLORS.white)
 
-    love.graphics.print(
+    love.graphics.print(localizeShopText(
         string.format(
             self.sell_confirmation_text,
             Mod.libs["magical-glass"].serious_mode and inventory[self:getSellMenuIndex()]:getSeriousName() or inventory[self:getSellMenuIndex()]:getShortName(),
                 string.format(self.currency_text,
                 inventory[self:getSellMenuIndex()]:getSellPrice()
             )
-        ), 60 + 50, 300
-    )
+        )), 60 + 50, 300)
 
-    love.graphics.print(self.sell_confirmation_yes_text, 60 + 100, 360)
-    love.graphics.print(self.sell_confirmation_no_text,  60 + 100 + 220, 360)
+    love.graphics.print(localizeShopText(self.sell_confirmation_yes_text), 60 + 100, 360)
+    love.graphics.print(localizeShopText(self.sell_confirmation_no_text),  60 + 100 + 220, 360)
 end
 
 function LightShop:drawTalkMenu()
@@ -1375,7 +1422,7 @@ function LightShop:drawTalkMenu()
         end
     end
     Draw.setColor(COLORS.white)
-    love.graphics.print("Exit", 60, 220 + ((math.max(4, #self.talks) + 1) * 40))
+    love.graphics.print(localizeShopText("Exit"), 60, 220 + ((math.max(4, #self.talks) + 1) * 40))
 end
 
 function LightShop:drawMoney(selling)

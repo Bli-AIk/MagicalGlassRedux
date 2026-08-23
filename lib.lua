@@ -1,18 +1,5 @@
 local Lib = {}
 
--- Runtime switch: the main mod can disable the library cleanly via mod.json
--- config ({"magical-glass": {"enabled": false}}); see README. When disabled,
--- hooks (scripts/hooks) bail out individually, so returning a no-op lib
--- table just leaves Mod.libs["magical-glass"] present for dependent checks.
-if Kristal.getLibConfig("magical-glass", "enabled") == false then
-    return {
-        preInit = function() end, init = function() end,
-        postInit = function() end, save = function() end,
-        load = function() end, cleanup = function() end,
-        registerDebugOptions = function() end,
-    }
-end
-
 function Lib:cleanup()
     MG_PALETTE               = nil
     MG_EVENT                 = nil

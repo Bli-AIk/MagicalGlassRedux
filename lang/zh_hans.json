@@ -557,5 +557,6 @@
  "mgr_use_eat": "吃掉",
  "mgr_use_used": "用完",
  "mgr_xact_standard": "标准",
- "mgr_xact_x_action": "X-动作"
+ "mgr_xact_x_action": "X-动作",
+ "mgr_act_check": "查看"
 }

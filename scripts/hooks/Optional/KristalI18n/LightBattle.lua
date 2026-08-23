@@ -2,12 +2,9 @@
 -- construction. Enemy subclasses set their source strings after calling the
 -- base init, so LightBattle:postInit is the first stable refresh boundary.
 local HasI18N = Mod and Mod.libs and Mod.libs["kristalI18n"] ~= nil
-if Mod and Mod.libs and Mod.libs["magical-glass"] and Kristal.getLibConfig and
-    Kristal.getLibConfig("magical-glass", "enabled") == false then
-    return LightBattle
-end
 
 local LightBattle, super = HookSystem.hookScript(LightBattle)
+local _, I18N = Kristal.executeLibScript("magical-glass", "scripts/i18n")
 
 local function hasLoc(key)
     return HasI18N and Game and Game.hasStr and Game:hasStr(key)
@@ -21,15 +18,7 @@ local function callLoc(key, fallback, var)
 end
 
 local function localizeItemName(name)
-    local mgr = Mod and Mod.libs and Mod.libs["magical-glass"]
-    local resolver = mgr and mgr.i18n_localizeItemName
-    if type(resolver) == "function" then
-        local ok, localized = pcall(resolver, name)
-        if ok and type(localized) == "string" then
-            return localized
-        end
-    end
-    return name
+    return I18N and I18N.itemName(name) or name
 end
 
 local SPARE_COLOR_TEXT_IDS = {
@@ -84,12 +73,7 @@ end
 
 local function refreshEnemies(battle)
     for _, enemy in ipairs(battle.enemies or {}) do
-        for _, lib in Kristal.iterLibraries() do
-            local refresh = lib.i18n_refreshEnemy
-            if type(refresh) == "function" then
-                refresh(enemy)
-            end
-        end
+        I18N.refreshEnemy(enemy)
     end
 end
 
