@@ -20,6 +20,18 @@ local function callLoc(key, fallback, var)
     return fallback
 end
 
+local function localizeItemName(name)
+    local mgr = Mod and Mod.libs and Mod.libs["magical-glass"]
+    local resolver = mgr and mgr.i18n_localizeItemName
+    if type(resolver) == "function" then
+        local ok, localized = pcall(resolver, name)
+        if ok and type(localized) == "string" then
+            return localized
+        end
+    end
+    return name
+end
+
 local SPARE_COLOR_TEXT_IDS = {
     YELLOW = "mgr_battle_spare_color_yellow",
 }
@@ -42,7 +54,9 @@ local function localizeBattleLine(line)
 
     local user, item = line:match("^%* (.-) used the (.+)%.$")
     if user then
-        return callLoc("mgr_battle_item_used", line, { who = user, item = item })
+        return callLoc("mgr_battle_item_used", line, {
+            who = user, item = localizeItemName(item),
+        })
     end
 
     local maxed_who = line:match("^%* (.-)'s HP was maxed out%.$")

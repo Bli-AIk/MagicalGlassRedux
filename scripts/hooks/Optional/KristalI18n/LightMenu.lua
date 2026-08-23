@@ -42,6 +42,18 @@ local function loc(key, fallback, var)
     return fallback
 end
 
+local function localizeItemName(name)
+    local mgr = Mod and Mod.libs and Mod.libs["magical-glass"]
+    local resolver = mgr and mgr.i18n_localizeItemName
+    if type(resolver) == "function" then
+        local ok, localized = pcall(resolver, name)
+        if ok and type(localized) == "string" then
+            return localized
+        end
+    end
+    return name
+end
+
 local LIGHT_BATTLE_ACTION_IDS = {
     spare = "mgr_action_spare",
     defend = "mgr_action_defend",
@@ -73,7 +85,6 @@ local LIGHT_UI_TEXT_IDS = {
     ["Flee"] = "mgr_action_flee",
     ["AT"] = "mgr_lightstat_at",
     ["DF"] = "mgr_lightstat_df",
-    ["MAX"] = "mgr_lightstat_max",
     ["EXP: "] = "mgr_lightstat_exp",
     ["KILLS: "] = "mgr_lightstat_kills",
     ["NEXT: "] = "mgr_lightstat_next",
@@ -123,7 +134,7 @@ local function localizeLightUIText(text)
     -- ("* You used the 黑暗汉堡."); the item name keeps its own localization.
     local used = text:match("^%* You used the (.+)%.$")
     if used then
-        return loc("mgr_item_used_target", text, { item = used })
+        return loc("mgr_item_used_target", text, { item = localizeItemName(used) })
     end
     -- LightStatMenu bottom hint: "PRESS [Z] TO VIEW SPELLS" (gamepad mode
     -- draws the key icon separately and stays English).
@@ -138,10 +149,17 @@ local function localizeLightUIText(text)
     -- raw fields): "* Kris consumes the Bad Memory.\n* Kris lost 1HP."
     local line1, line2 = text:match("^(%* .-)%s*\n%s*(%* .+)$")
     if line1 and line2 then
-        local who, verb, what = line1:match("^%* (%S+) ([%a]-)s? the (.+)%.")
+        local who, verb, what = line1:match("^%* (.-) ([%a]+) the (.+)%.")
         if who and verb and what then
+            local verb_key = verb
+            if not (HasI18N and Game and Game.hasStr and Game:hasStr("mgr_use_" .. verb_key)) and
+                verb_key:sub(-1) == "s" then
+                verb_key = verb_key:sub(1, -2)
+            end
             line1 = loc("mgr_item_light_use", line1, {
-                who = who, verb = loc("mgr_use_" .. verb, verb), item = what,
+                who = who,
+                verb = loc("mgr_use_" .. verb_key, verb),
+                item = localizeItemName(what),
             })
         end
         local lost_who, lost_amount = line2:match("^%* (%S+) lost ([%d%.]+)HP%.$")
