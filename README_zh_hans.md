@@ -94,7 +94,7 @@ git submodule add https://github.com/Bli-AIk/MagicalGlassRedux.git \
 | ---- | ---- |
 | [Noelle-Libraries-Pack](https://github.com/FireRainV/Noelle-Libraries-Pack)（上游） | FireRainV |
 | Noelle-Libraries-Pack-v11-dev（commit `77bf47c`）—— 本 fork 0.11-dev 移植的基础 | Stevenson89 |
-| UT 汉化补丁 0.3.3 键值对提取（UT 汉化原作：好人汉化组） | 真是滑稽了啊 |
+| UT 汉化补丁 0.3.3 键值对提取 | 真是滑稽了啊（提取）· [Goodman 3 Localization Group \| UNDERTALE & DELTARUNE Chinese Localization](https://github.com/gm3dr/)（UT 汉化原作） |
 | [DeltaruneChinese](https://github.com/gm3dr/DeltaruneChinese) —— 与光世界 UI 重叠处以它为准 | [Goodman 3 Localization Group \| UNDERTALE & DELTARUNE Chinese Localization](https://github.com/gm3dr/) |
 | [kristal-i18n](https://github.com/Bli-AIk/kristal-i18n) | Bli-AIk |
 
