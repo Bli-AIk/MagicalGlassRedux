@@ -1,0 +1,22 @@
+{
+  // UT characters referenced by magical-glass content (items, actors, chara
+  // titles). Resolved through the kristal-i18n [name:<id>] dictionary; ships
+  // here because these names belong to this library's content, not to the
+  // i18n base library.
+  "alphys": {
+    "en": "Alphys",
+    "zh_hans": "艾菲斯"
+  },
+  "frisk": {
+    "en": "Frisk",
+    "zh_hans": "弗里斯克"
+  },
+  "mettaton": {
+    "en": "Mettaton",
+    "zh_hans": "镁塔顿"
+  },
+  "temmie": {
+    "en": "Temmie",
+    "zh_hans": "提米"
+  }
+}
