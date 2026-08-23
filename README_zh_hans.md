@@ -55,7 +55,7 @@ git submodule add https://github.com/Bli-AIk/MagicalGlassRedux.git \
 
 配套库（可选）：
 
-- [UndertaleMonstersRecreation](https://github.com/Bli-AIk/UndertaleMonstersRecreation) —— UT 怪物（蛙吉特、摩登斯玛尔…）光战斗内容。
+- [UndertaleMonstersRecreation](https://github.com/Bli-AIk/UndertaleMonstersRecreation) —— UT 怪物（蛙吉特、小模怪…）光战斗内容。
 - [kristal-i18n](https://github.com/Bli-AIk/kristal-i18n) —— 本地化框架（见下）。
 
 **2. 注册内容**
@@ -100,9 +100,7 @@ git submodule add https://github.com/Bli-AIk/MagicalGlassRedux.git \
 
 ## 参与贡献
 
-欢迎提交 Issue 或 Pull Request。本 fork 是本地移植枢纽：非 fork 特有的修复请尽量以 PR 回捐上游（[FireRainV/Noelle-Libraries-Pack](https://github.com/FireRainV/Noelle-Libraries-Pack)），避免 fork 本地漂移。
-
-仓库布局（上游代码 vs fork 代码）、落地规则与翻译审核要求见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+欢迎提交 Issue 或 Pull Request。仓库布局（上游代码 vs fork 代码）、落地规则与翻译审核要求见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 许可证
 

@@ -100,9 +100,7 @@ Translation provenance is recorded in the comments of `lang/zh_hans.json`; see [
 
 ## Contributing
 
-Issues and Pull Requests are welcome. This fork is the local port hub: prefer sending fixes that are not fork-specific back upstream ([FireRainV/Noelle-Libraries-Pack](https://github.com/FireRainV/Noelle-Libraries-Pack)) as PRs, to avoid fork-local drift.
-
-For the repo layout (upstream vs fork code), land rules and translation review requirements, see [CONTRIBUTING.md](CONTRIBUTING.md).
+Issues and Pull Requests are welcome. For the repo layout (upstream vs fork code), land rules and translation review requirements, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
