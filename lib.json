@@ -13,7 +13,7 @@
         "TheSkerch"                     // Purple Soul
     ],
 
-    "version": "v5.0.1",
+    "version": "0.0.0", // x-release-please-version
     "engineVer": "v0.11.0-dev",
 
     "config": {
