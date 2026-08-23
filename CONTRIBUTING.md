@@ -23,8 +23,6 @@
 - CI checks (Kristal update check + upstream drift check) must not be bypassed;
   updating `.github/upstream-facts.json` pins requires a reviewed upstream diff
   (`UPSTREAM.md` documents the recompute commands).
-- Prefer sending fixes upstream (FireRainV/Noelle-Libraries-Pack) as PRs when
-  possible.
 
 ## Dev setup
 
