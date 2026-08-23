@@ -14,9 +14,15 @@ MagicalGlassRedux to Kristal 0.11-dev and adds optional
 
 ## Kristal version support
 
-| Kristal v0.11.0-dev (`f62afea`, 2026-08-22) | MagicalGlassRedux v5.0.1, engineVer `v0.11.0-dev` |
+| Kristal v0.11.0-dev (`f62afea`, 2026-08-22) | MagicalGlassRedux v0.0.0, engineVer `v0.11.0-dev` |
 |---|---|
 | Kristal v0.10.0 | v5.0.1 (upstream; `f182f69`) |
+
+### Upstream alignment
+
+| fork 版本 | 对齐的上游 | 上游 ref | 说明 |
+|---|---|---|---|
+| 0.0.0 | MagicalGlassRedux v5.0.1 | Noelle-Libraries-Pack `f182f69` (tree `f7c33b9`) | 0.11-dev 移植 + kristal-i18n 适配 |
 
 ## Install
 
