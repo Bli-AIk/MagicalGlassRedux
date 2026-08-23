@@ -6,6 +6,11 @@
  // 标记（^N 等待、\E 转义、% / 收尾符、流转用的 ASCII 逗号）均在生成时清除；中文间距由
  // kristal-i18n 处理；缺失回退英文。多页 check：第 2 页起用 item_<id>_check_2 键
  // （每页由引擎逐页显示，对应上游 check 数组的同页翻译）。
+ "chara_frisk_title_chapter_1": "决心者\n以【决心】\n战斗到底。",
+ "chara_frisk_title_chapter_2": "决心者\n以【决心】\n战斗到底。",
+ "chara_frisk_title_chapter_3": "决心者\n以【决心】\n战斗到底。",
+ "chara_frisk_title_chapter_4": "决心者\n以【决心】\n战斗到底。",
+ "chara_frisk_title_chapter_5": "决心者\n以【决心】\n战斗到底。",
  "item_mg/cracked_bat_check": "武器 AT 8\n* 一根轻木棒，上面有道明显的裂缝。",
  "item_mg/cracked_bat_description": "一根轻木棒，上面有道明显的裂缝。",
  "item_mg/cracked_bat_name": "破球棒",
