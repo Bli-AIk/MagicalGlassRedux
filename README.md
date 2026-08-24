@@ -15,10 +15,10 @@ This repository is a **maintenance fork**: upstream ([FireRainV/Noelle-Libraries
 
 | Kristal version | MagicalGlassRedux |
 | --------------- | ----------------- |
-| [v0.11.0-dev](https://github.com/KristalTeam/Kristal/commit/f62afea63ccab02f468c24ac0d096bd8a2c9aa81) (`f62afea`, 2026-08-17) | v0.0.0 (fork), engineVer `v0.11.0-dev` |
+| [v0.11.0-dev](https://github.com/KristalTeam/Kristal/commit/f62afea63ccab02f468c24ac0d096bd8a2c9aa81) (`f62afea`, 2026-08-17) | v0.1.0 (fork), engineVer `v0.11.0-dev` |
 | v0.10.0 | v5.0.1 (upstream; `f182f69`) |
 
-`v0.0.0` is the fork's current version line in `lib.json`; there is no packaged fork release yet (see [`CHANGELOG.md`](CHANGELOG.md)).
+`v0.1.0` is the fork's current version line in `lib.json`; there is no packaged fork release yet (see [`CHANGELOG.md`](CHANGELOG.md)).
 
 ### Upstream alignment
 
