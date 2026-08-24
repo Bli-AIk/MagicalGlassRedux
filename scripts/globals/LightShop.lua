@@ -10,8 +10,10 @@ local SHOP_TEXT_IDS = {
     ["Buy"] = "mgr_shop_buy",
     ["Sell"] = "mgr_shop_sell",
     ["Talk"] = "mgr_shop_talk",
+    ["(Thank you!)"] = "mgr_shop_sold_text",
     ["Exit"] = "mgr_shop_exit",
     ["Return"] = "mgr_shop_return",
+    ["Invalid storage"] = "mgr_shop_invalid_storage",
     ["Sell Items"] = "mgr_shop_sell_items",
     ["Sell Box A Items"] = "mgr_shop_sell_box_a",
     ["Sell Box B Items"] = "mgr_shop_sell_box_b",
@@ -1212,7 +1214,9 @@ function LightShop:drawItemDescription(text, x, y)
 end
 
 function LightShop:drawItemHealAmount(amount, x, y)
-    self:drawItemDescription("Heals " .. amount .. "HP", x, y)
+    self:drawItemDescription(loc("mgr_shop_heals", "Heals " .. amount .. "HP", {
+        amount = amount,
+    }), x, y)
 end
 
 function LightShop:drawItemBonusInfo(item, type_name, stat, stat_name, x, y)
@@ -1325,7 +1329,7 @@ function LightShop:drawSellItems()
 
     if inventory == nil then
         Draw.setColor(COLORS.ltgray)
-        love.graphics.print("Invalid storage", 60, 260)
+        love.graphics.print(localizeShopText("Invalid storage"), 60, 260)
         return
     end
 
@@ -1343,11 +1347,12 @@ function LightShop:drawSellItems()
 
         if item then
             local display_item = "???"
+            local item_name = Mod.libs["magical-glass"].serious_mode and item:getSeriousName() or item:getShortName()
 
             Draw.setColor(COLORS.white)
 
             if item:isSellable() then
-                display_item = string.format(self.currency_text, item:getSellPrice()) .. " - " .. (Mod.libs["magical-glass"].serious_mode and item:getSeriousName() or item:getShortName())
+                display_item = string.format(self.currency_text, item:getSellPrice()) .. " - " .. item_name
                 if item:getSellPrice() < 10 then
                     display_item = "  " .. display_item
                 end
@@ -1355,7 +1360,7 @@ function LightShop:drawSellItems()
                     display_item = "  " .. display_item
                 end
             else
-                display_item = "  NO! - " .. (Mod.libs["magical-glass"].serious_mode and item:getSeriousName() or item:getShortName())
+                display_item = "  " .. loc("mgr_shop_cannot_sell", "NO! - " .. item_name, { item = item_name })
             end
 
             i = i - current_page
@@ -1367,7 +1372,7 @@ function LightShop:drawSellItems()
     if self.sell_page >= self:getSellMaxPage() then
         for i = 8, 9 - self.sold_items, -1 do
             Draw.setColor(COLORS.gray)
-            love.graphics.print(self.sold_text, 60 + ((i % 2) == 0 and 282 or 0), 240 + ((i - ((i - 1) % 2)) * 20))
+            love.graphics.print(localizeShopText(self.sold_text), 60 + ((i % 2) == 0 and 282 or 0), 240 + ((i - ((i - 1) % 2)) * 20))
         end
     end
 
@@ -1376,7 +1381,7 @@ function LightShop:drawSellItems()
     love.graphics.print(localizeShopText("Exit"), 60, 420)
 
     if self:getSellMaxPage() > 1 then
-        love.graphics.print("PAGE " .. self.sell_page, 285, 420)
+        love.graphics.print(loc("mgr_shop_page", "PAGE " .. self.sell_page, { page = self.sell_page }), 285, 420)
     end
 end
 
