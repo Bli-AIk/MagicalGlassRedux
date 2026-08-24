@@ -15,7 +15,7 @@
 
 | Kristal 版本 | MagicalGlassRedux |
 | ------------ | ----------------- |
-| [v0.11.0-dev](https://github.com/KristalTeam/Kristal/commit/f62afea63ccab02f468c24ac0d096bd8a2c9aa81)（`f62afea`，2026-08-17） | v0.1.0（fork），engineVer `v0.11.0-dev` |
+| [v0.11.0-dev](https://github.com/KristalTeam/Kristal/commit/f62afea63ccab02f468c24ac0d096bd8a2c9aa81)（`f62afea`，2026-08-17） | v0.1.0 |
 | v0.10.0 | v5.0.1（上游；`f182f69`） |
 
 `v0.1.0` 是本 fork 当前在 `lib.json` 中的版本线；本 fork 尚未发布打包版本（见 [`CHANGELOG.md`](CHANGELOG.md)）。
