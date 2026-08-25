@@ -10,6 +10,13 @@ All notable changes to this fork are documented here, following
   engineVer bumped to v0.10.0. Imported at upstream commit `f182f69`,
   folder tree `b6684d0...`. Not released by this fork yet.
 
+## [0.1.1](https://github.com/Bli-AIk/MagicalGlassRedux/compare/v0.1.0...v0.1.1) (2026-08-25)
+
+
+### Bug Fixes
+
+* support light encounter prefix ([c90210c](https://github.com/Bli-AIk/MagicalGlassRedux/commit/c90210c348b700d59de3d6005c712e6f152ab2e5))
+
 ## [0.1.0](https://github.com/Bli-AIk/MagicalGlassRedux/compare/v0.0.1...v0.1.0) (2026-08-24)
 
 
