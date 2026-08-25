@@ -68,6 +68,20 @@ git submodule add https://github.com/Bli-AIk/MagicalGlassRedux.git \
 
 > ⚠️ 库不存在时**不要**调用 `Kristal.getLibConfig("magical-glass", ...)`，会报错。
 
+### 直接启动光世界遭遇战
+
+通过 `mod.json` 顶层的 `encounter` 直接启动遭遇战时，请给已注册的光世界遭遇战 ID
+加上 `light/` 前缀。MGR 会在查找遭遇战前去掉此前缀，并启动 `LightBattle`：
+
+```jsonc
+"encounter": "light/froggit"
+```
+
+这只选择光世界战斗系统，不会改变当前地图的光/暗世界状态。它要求启用 MGR 和注册
+`froggit` 的内容库（例如 UndertaleMonstersRecreation）。普通代码仍请使用
+`Game:encounter("froggit", transition, enemy, context, true)` 或
+`WorldCutscene:startLightEncounter`。`light/` 会保留为这种直接启动选择器。
+
 ## kristal-i18n 支持（可选）
 
 当加载了 kristal-i18n（`kristalI18n`）时，本库自动本地化其 UI 字符串（光世界商店、光世界菜单、动作按钮、敌人名/检查文本），经 `Game:loc` + `Game:hasStr` 守卫；并按语言携带资源覆盖于 `assets/sprites/lang/<lang>/...`（如中文战斗按钮贴图）。没有 kristal-i18n 时一切不生效，保持上游英文。语言数据位于 `lang/`，由 kristal-i18n 自动合并。

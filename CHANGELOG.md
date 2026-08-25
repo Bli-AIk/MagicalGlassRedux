@@ -86,6 +86,7 @@ All notable changes to this fork are documented here, following
 
 ### Port / i18n (in progress)
 
+- Support `mod.json` direct light-encounter launches through `light/<id>`.
 - Import MagicalGlassRedux v5.0.1 from upstream tree (see `UPSTREAM.md`).
 - Kristal 0.11-dev API port (based on Stevenson89's `Noelle-Libraries-Pack-v11-dev`
   commit `77bf47c`).

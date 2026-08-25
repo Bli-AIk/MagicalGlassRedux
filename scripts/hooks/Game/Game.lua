@@ -46,8 +46,27 @@ function Game:setupShop(shop)
     super.setupShop(self, shop)
 end
 
+local LIGHT_ENCOUNTER_PREFIX = "light/"
+
 -- 'light' is whether it will be a light battle or a dark battle
 function Game:encounter(encounter, transition, enemy, context, light)
+    -- Kristal's top-level mod.json `encounter` option does not pass MGR's
+    -- `light` argument. Treat light/<id> as an explicit LightBattle launch
+    -- and remove the namespace before looking up MGR's bare encounter ID.
+    if light == nil and type(encounter) == "string" and StringUtils.startsWith(encounter, LIGHT_ENCOUNTER_PREFIX) then
+        local light_encounter = StringUtils.sub(encounter, #LIGHT_ENCOUNTER_PREFIX + 1)
+        if light_encounter == "" then
+            error("Attempted to start a light encounter without an ID")
+        end
+        if not Mod.libs["magical-glass"]:getLightEncounter(light_encounter) then
+            error("Attempted to start non-existent light encounter \"" .. light_encounter .. "\"")
+        end
+        -- This selector must take priority over a battle-system choice restored
+        -- from a save. It has the same scope as the explicit `light` argument:
+        -- choose a LightBattle without changing the current world's type.
+        return self:encounterLight(light_encounter, transition, enemy, context)
+    end
+
     if Mod.libs["magical-glass"].current_battle_system then
         if Mod.libs["magical-glass"].current_battle_system == "undertale" then
             self:encounterLight(encounter, transition, enemy, context)

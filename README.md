@@ -68,6 +68,23 @@ Defaults live in `lib.json`; read them with `Kristal.getLibConfig("magical-glass
 
 > ⚠️ Do **not** call `Kristal.getLibConfig("magical-glass", ...)` when the library is absent — it errors.
 
+### Direct-start light encounters
+
+When launching an encounter through the top-level `encounter` option in
+`mod.json`, prefix a registered light encounter ID with `light/`. MGR removes
+that prefix before looking up the encounter and starts a `LightBattle`:
+
+```jsonc
+"encounter": "light/froggit"
+```
+
+This selects the battle system without changing the current world's light/dark
+state. It requires MGR and the library that registers `froggit` (for example,
+UndertaleMonstersRecreation). For normal code, continue to use
+`Game:encounter("froggit", transition, enemy, context, true)` or
+`WorldCutscene:startLightEncounter`. `light/` is reserved for this direct-start
+selector.
+
 ## kristal-i18n Support (optional)
 
 When the kristal-i18n library (`kristalI18n`) is loaded, this library auto-localizes its UI strings (light shop, light menus, action buttons, enemy names/check texts) through `Game:loc` with `Game:hasStr` guards, and ships per-language assets under `assets/sprites/lang/<lang>/...` (e.g. Chinese battle button sprites). Without kristal-i18n, nothing is patched and everything stays in upstream English. Language data lives in `lang/` and is merged by kristal-i18n automatically.
