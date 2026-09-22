@@ -26,6 +26,6 @@
 
 ## Dev setup
 
-- Local Kristal 0.11-dev checkout pinned at `f62afea` (see README support
+- Local Kristal 0.11-dev checkout pinned at `8e592d8` (see README support
   table). A `test-mgr` mod derived from the mod template is used for smoke
   testing light battles, shops and savepoints.
