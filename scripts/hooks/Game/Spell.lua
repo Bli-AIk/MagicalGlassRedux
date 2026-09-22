@@ -114,12 +114,12 @@ end
 
 function Spell:onLightWorldStart(user, target)
     Mod.libs["magical-glass"].heal_amount = nil
-    self:onLightWorldCast(target)
+    self:onLightWorldCast(user, target)
     Game.world:showText(self:getLightWorldCastMessage(user, target))
 end
 
-function Spell:onLightWorldCast(target)
-    self:onWorldCast(target)
+function Spell:onLightWorldCast(user, target)
+    self:onWorldCast(user, target)
 end
 
 function Spell:getLightWorldCastMessage(user, target)

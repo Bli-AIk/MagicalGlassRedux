@@ -2,10 +2,13 @@ local FleeButton, super = Class(ActionButton)
 
 -- A dark battle action button which lets to toggle between the spare and flee button by pressing up or down while hovering on either of them
 function FleeButton:init(flee_only)
-    super.init(self, "flee")
+    super.init(self, nil)
 
     self.flee_only = flee_only -- Whether to disallow changing to the spare button
     self.flee_mode = self.flee_only
+
+    -- Which of the two sprites is currently drawn
+    self.displayed_type = self.flee_mode and "flee" or "spare"
 
     self.delay_timer = 0
 end
@@ -39,17 +42,30 @@ function FleeButton:update()
         end
     end
 
-    local type = self.type
-    if not self.flee_mode then
-        type = "spare"
-    end
-
     if self.delay_timer <= 0 then
-        self.texture = Assets.getTexture("ui/battle/btn/" .. type)
-        self.hovered_texture = Assets.getTexture("ui/battle/btn/" .. type .. "_h")
-        self.special_texture = Assets.getTexture("ui/battle/btn/" .. type .. "_a")
-        self.disabled_texture = Assets.getTexture("ui/battle/btn/" .. type .. "_d")
+        self.displayed_type = self.flee_mode and "flee" or "spare"
     end
+end
+
+-- The "flee" or "spare" sprite currently drawn
+function FleeButton:getDisplayedType()
+    return self.displayed_type
+end
+
+function FleeButton:getTexture()
+    return Assets.getTexture("ui/battle/btn/" .. self:getDisplayedType())
+end
+
+function FleeButton:getHoveredTexture()
+    return Assets.getTexture("ui/battle/btn/" .. self:getDisplayedType() .. "_h")
+end
+
+function FleeButton:getSpecialTexture()
+    return Assets.getTexture("ui/battle/btn/" .. self:getDisplayedType() .. "_a")
+end
+
+function FleeButton:getDisabledTexture()
+    return Assets.getTexture("ui/battle/btn/" .. self:getDisplayedType() .. "_d")
 end
 
 function FleeButton:select()
