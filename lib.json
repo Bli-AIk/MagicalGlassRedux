@@ -1,5 +1,6 @@
 {
     "id": "magical-glass",
+    "alias": "mgr", // short name for launch-time overrides and error messages
 
     "authors": [
         "Nyakorita",                    // Original Author
