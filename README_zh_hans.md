@@ -13,18 +13,19 @@
 
 ## Kristal 版本支持
 
-| Kristal 版本 | MagicalGlassRedux |
-| ------------ | ----------------- |
-| [v0.11.0-dev](https://github.com/KristalTeam/Kristal/commit/8e592d84065263138d4e92593f0a4ab780d93822)（`8e592d8`，2026-09-21） | v0.1.0 |
-| v0.10.0 | v5.0.1（上游；`f182f69`） |
+| Kristal 版本                                                                                                                   | MagicalGlassRedux         |
+| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------- |
+| [v0.11.0-dev](https://github.com/KristalTeam/Kristal/commit/8e592d84065263138d4e92593f0a4ab780d93822)（`8e592d8`，2026-09-21） |                           |
+| [v0.11.0-dev](https://github.com/KristalTeam/Kristal/commit/f62afea63ccab02f468c24ac0d096bd8a2c9aa81)（`f62afea`，2026-08-17） | v0.1.0                    |
+| v0.10.0                                                                                                                        | v5.0.1（上游；`f182f69`） |
 
 `v0.1.0` 是本 fork 当前在 `lib.json` 中的版本线；本 fork 尚未发布打包版本（见 [`CHANGELOG.md`](CHANGELOG.md)）。
 
 ### 上游对齐
 
-| fork 版本 | 对齐的上游 | 上游 ref | 说明 |
-| --------- | ---------- | -------- | ---- |
-| v0.0.0 | MagicalGlassRedux v5.0.1 | Noelle-Libraries-Pack `f182f69`（文件树 `b6684d0`） | Kristal 0.11-dev 移植 + kristal-i18n 适配 |
+| fork 版本 | 对齐的上游               | 上游 ref                                            | 说明                                      |
+| --------- | ------------------------ | --------------------------------------------------- | ----------------------------------------- |
+| v0.0.0    | MagicalGlassRedux v5.0.1 | Noelle-Libraries-Pack `f182f69`（文件树 `b6684d0`） | Kristal 0.11-dev 移植 + kristal-i18n 适配 |
 
 上游 pin 记录在 `.github/upstream-facts.json`；计算方法见 [`UPSTREAM.md`](UPSTREAM.md)。
 
@@ -92,13 +93,13 @@ git submodule add https://github.com/Bli-AIk/MagicalGlassRedux.git \
 
 ## 上游来源与参考
 
-| 来源 | 作者 |
-| ---- | ---- |
-| [Noelle-Libraries-Pack](https://github.com/FireRainV/Noelle-Libraries-Pack)（上游） | FireRainV |
-| Noelle-Libraries-Pack-v11-dev（commit `77bf47c`）—— 本 fork 0.11-dev 移植的基础 | Stevenson89 |
-| UT 汉化补丁 0.3.3 键值对提取 | 真是滑稽了啊（提取）· [Goodman 3 Localization Group \| UNDERTALE & DELTARUNE Chinese Localization](https://github.com/gm3dr/)（UT 汉化原作） |
-| [DeltaruneChinese](https://github.com/gm3dr/DeltaruneChinese) —— 与光世界 UI 重叠处以它为准 | [Goodman 3 Localization Group \| UNDERTALE & DELTARUNE Chinese Localization](https://github.com/gm3dr/) |
-| [kristal-i18n](https://github.com/Bli-AIk/kristal-i18n) | Bli-AIk |
+| 来源                                                                                        | 作者                                                                                                                                         |
+| ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Noelle-Libraries-Pack](https://github.com/FireRainV/Noelle-Libraries-Pack)（上游）         | FireRainV                                                                                                                                    |
+| Noelle-Libraries-Pack-v11-dev（commit `77bf47c`）—— 本 fork 0.11-dev 移植的基础             | Stevenson89                                                                                                                                  |
+| UT 汉化补丁 0.3.3 键值对提取                                                                | 真是滑稽了啊（提取）· [Goodman 3 Localization Group \| UNDERTALE & DELTARUNE Chinese Localization](https://github.com/gm3dr/)（UT 汉化原作） |
+| [DeltaruneChinese](https://github.com/gm3dr/DeltaruneChinese) —— 与光世界 UI 重叠处以它为准 | [Goodman 3 Localization Group \| UNDERTALE & DELTARUNE Chinese Localization](https://github.com/gm3dr/)                                      |
+| [kristal-i18n](https://github.com/Bli-AIk/kristal-i18n)                                     | Bli-AIk                                                                                                                                      |
 
 ## 参与贡献
 
@@ -108,8 +109,8 @@ git submodule add https://github.com/Bli-AIk/MagicalGlassRedux.git \
 
 **许可拆分**（重要——见 [LICENSE-UPSTREAM.md](LICENSE-UPSTREAM.md)、[LICENSE-MIT](LICENSE-MIT)、[LICENSE-APACHE](LICENSE-APACHE)）：
 
-- *上游代码* —— pack 库中最初随附的全部内容（`assets/`、`scripts/`、`lib.json`、`lib.lua`，import 提交 `e2f568d`，对应上游 `f182f69`）—— **保留所有权利** © `lib.json` 所列原作者（Nyakorita、Sam Deluxe、FireRainV、SadDiamondMan、Azrael、Trashcat、Annie、vitellary、TheSkerch）；上游发布时**未授予任何开源许可**。本仓库不对其主张任何开源许可。
-- *第三方素材* —— `assets/fonts/` 下的 fusion-pixel-font 二进制 © TakWolf，依 **SIL Open Font License 1.1** 授权（`assets/fonts/LICENSE-fusion-pixel-font.txt`），不在 fork 许可范围内。
-- *fork 代码* —— 0.11-dev 移植、kristal-i18n 适配、CI 与文档 —— **MIT OR Apache-2.0 双许可，任选其一**。
+- _上游代码_ —— pack 库中最初随附的全部内容（`assets/`、`scripts/`、`lib.json`、`lib.lua`，import 提交 `e2f568d`，对应上游 `f182f69`）—— **保留所有权利** © `lib.json` 所列原作者（Nyakorita、Sam Deluxe、FireRainV、SadDiamondMan、Azrael、Trashcat、Annie、vitellary、TheSkerch）；上游发布时**未授予任何开源许可**。本仓库不对其主张任何开源许可。
+- _第三方素材_ —— `assets/fonts/` 下的 fusion-pixel-font 二进制 © TakWolf，依 **SIL Open Font License 1.1** 授权（`assets/fonts/LICENSE-fusion-pixel-font.txt`），不在 fork 许可范围内。
+- _fork 代码_ —— 0.11-dev 移植、kristal-i18n 适配、CI 与文档 —— **MIT OR Apache-2.0 双许可，任选其一**。
 - 拆分以 `git log` 为准：`Import MagicalGlassRedux v5.0.1 ...` 及以前均为上游代码，其后为 fork 代码；文件不做逐个体标注。
 - 上游文本的衍生物（如上游文本的翻译）归于上游权利；fork 原创翻译由 fork 许可覆盖。
