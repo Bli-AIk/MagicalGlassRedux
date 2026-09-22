@@ -366,7 +366,11 @@ function Lib:init()
         return StorageBox(data.x, data.y, { data.width, data.height, data.polygon }, data.properties)
     end)
 
-    -- print("Loaded Magical Glass: Redux " .. self.info.version .. "!")
+    -- Announced through the engine's "System" logger; kristal-i18n keys off
+    -- this exact English wording to translate it (see its localizeConsoleSegments).
+    if Logging and Logging.info then
+        Logging.info("Enabled library " .. self.info.id .. ".")
+    end
 
     self.encounters_enabled = false
     self.steps_until_encounter = nil
