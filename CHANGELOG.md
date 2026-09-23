@@ -10,6 +10,19 @@ All notable changes to this fork are documented here, following
   engineVer bumped to v0.10.0. Imported at upstream commit `f182f69`,
   folder tree `b6684d0...`. Not released by this fork yet.
 
+## [0.2.0](https://github.com/Bli-AIk/MagicalGlassRedux/compare/v0.1.0...v0.2.0) (2026-09-23)
+
+
+### Features
+
+* declare the "mgr" short alias in lib.json ([3ae0209](https://github.com/Bli-AIk/MagicalGlassRedux/commit/3ae0209e1ee769277edaa3dae2b8886b00164735))
+
+
+### Bug Fixes
+
+* **port:** track Kristal 8e592d8 (ActionButton split, onWorldCast user) ([#8](https://github.com/Bli-AIk/MagicalGlassRedux/issues/8)) ([036beb7](https://github.com/Bli-AIk/MagicalGlassRedux/commit/036beb74caae2e7f3e8799ecc2a9ca4ec616edab))
+* support light encounter prefix ([c90210c](https://github.com/Bli-AIk/MagicalGlassRedux/commit/c90210c348b700d59de3d6005c712e6f152ab2e5))
+
 ## [0.1.0](https://github.com/Bli-AIk/MagicalGlassRedux/compare/v0.0.1...v0.1.0) (2026-08-24)
 
 
