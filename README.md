@@ -13,18 +13,19 @@ This repository is a **maintenance fork**: upstream ([FireRainV/Noelle-Libraries
 
 ## Kristal Version Support
 
-| Kristal version | MagicalGlassRedux |
-| --------------- | ----------------- |
-| [v0.11.0-dev](https://github.com/KristalTeam/Kristal/commit/f62afea63ccab02f468c24ac0d096bd8a2c9aa81) (`f62afea`, 2026-08-17) | v0.1.0 |
-| v0.10.0 | v5.0.1 (upstream; `f182f69`) |
+| Kristal version                                                                                                               | MagicalGlassRedux            |
+| ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| [v0.11.0-dev](https://github.com/KristalTeam/Kristal/commit/8e592d84065263138d4e92593f0a4ab780d93822) (`8e592d8`, 2026-09-21) |                              |
+| [v0.11.0-dev](https://github.com/KristalTeam/Kristal/commit/f62afea63ccab02f468c24ac0d096bd8a2c9aa81) (`f62afea`, 2026-08-17) | v0.1.0                       |
+| v0.10.0                                                                                                                       | v5.0.1 (upstream; `f182f69`) |
 
 `v0.1.0` is the fork's current version line in `lib.json`; there is no packaged fork release yet (see [`CHANGELOG.md`](CHANGELOG.md)).
 
 ### Upstream alignment
 
-| Fork version | Aligned upstream | Upstream ref | Notes |
-| ------------ | ---------------- | ------------ | ----- |
-| v0.0.0 | MagicalGlassRedux v5.0.1 | Noelle-Libraries-Pack `f182f69` (folder tree `b6684d0`) | Kristal 0.11-dev port + kristal-i18n adaption |
+| Fork version | Aligned upstream         | Upstream ref                                            | Notes                                         |
+| ------------ | ------------------------ | ------------------------------------------------------- | --------------------------------------------- |
+| v0.0.0       | MagicalGlassRedux v5.0.1 | Noelle-Libraries-Pack `f182f69` (folder tree `b6684d0`) | Kristal 0.11-dev port + kristal-i18n adaption |
 
 The pins live in `.github/upstream-facts.json`; see [`UPSTREAM.md`](UPSTREAM.md) for how they are computed.
 
@@ -95,13 +96,13 @@ Translation provenance is recorded in the comments of `lang/zh_hans.json`; see [
 
 ## Upstream & References
 
-| Source | Author |
-| ------ | ------ |
-| [Noelle-Libraries-Pack](https://github.com/FireRainV/Noelle-Libraries-Pack) (upstream) | FireRainV |
-| Noelle-Libraries-Pack-v11-dev (commit `77bf47c`) — base of this fork's Kristal 0.11-dev port | Stevenson89 |
-| UT 汉化补丁 0.3.3 key-value extraction | 真是滑稽了啊 (extraction) · [Goodman 3 Localization Group \| UNDERTALE & DELTARUNE Chinese Localization](https://github.com/gm3dr/) (original UT translation) |
-| [DeltaruneChinese](https://github.com/gm3dr/DeltaruneChinese) — overrides where the light-world UI overlaps | [Goodman 3 Localization Group \| UNDERTALE & DELTARUNE Chinese Localization](https://github.com/gm3dr/) |
-| [kristal-i18n](https://github.com/Bli-AIk/kristal-i18n) | Bli-AIk |
+| Source                                                                                                      | Author                                                                                                                                                        |
+| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Noelle-Libraries-Pack](https://github.com/FireRainV/Noelle-Libraries-Pack) (upstream)                      | FireRainV                                                                                                                                                     |
+| Noelle-Libraries-Pack-v11-dev (commit `77bf47c`) — base of this fork's Kristal 0.11-dev port                | Stevenson89                                                                                                                                                   |
+| UT 汉化补丁 0.3.3 key-value extraction                                                                      | 真是滑稽了啊 (extraction) · [Goodman 3 Localization Group \| UNDERTALE & DELTARUNE Chinese Localization](https://github.com/gm3dr/) (original UT translation) |
+| [DeltaruneChinese](https://github.com/gm3dr/DeltaruneChinese) — overrides where the light-world UI overlaps | [Goodman 3 Localization Group \| UNDERTALE & DELTARUNE Chinese Localization](https://github.com/gm3dr/)                                                       |
+| [kristal-i18n](https://github.com/Bli-AIk/kristal-i18n)                                                     | Bli-AIk                                                                                                                                                       |
 
 ## Contributing
 
@@ -111,8 +112,8 @@ Issues and Pull Requests are welcome. For the repo layout (upstream vs fork code
 
 **License split** (important — see [LICENSE-UPSTREAM.md](LICENSE-UPSTREAM.md), [LICENSE-MIT](LICENSE-MIT), [LICENSE-APACHE](LICENSE-APACHE)):
 
-- *Upstream code* — everything originally shipped in the pack library (`assets/`, `scripts/`, `lib.json`, `lib.lua` as imported at commit `e2f568d`, itself pinned to upstream `f182f69`) — **retains all rights** © the original authors listed in `lib.json` (Nyakorita, Sam Deluxe, FireRainV, SadDiamondMan, Azrael, Trashcat, Annie, vitellary, TheSkerch); upstream published it **without a license grant**. No open-source license is claimed for it here.
-- *Third-party assets* — the fusion-pixel-font binary under `assets/fonts/` is © TakWolf, licensed under the **SIL Open Font License 1.1** (`assets/fonts/LICENSE-fusion-pixel-font.txt`), not covered by the fork license.
-- *Fork code* — 0.11-dev port fixes, the kristal-i18n adapter, CI, and docs — is **dual-licensed MIT OR Apache-2.0, at your option**.
+- _Upstream code_ — everything originally shipped in the pack library (`assets/`, `scripts/`, `lib.json`, `lib.lua` as imported at commit `e2f568d`, itself pinned to upstream `f182f69`) — **retains all rights** © the original authors listed in `lib.json` (Nyakorita, Sam Deluxe, FireRainV, SadDiamondMan, Azrael, Trashcat, Annie, vitellary, TheSkerch); upstream published it **without a license grant**. No open-source license is claimed for it here.
+- _Third-party assets_ — the fusion-pixel-font binary under `assets/fonts/` is © TakWolf, licensed under the **SIL Open Font License 1.1** (`assets/fonts/LICENSE-fusion-pixel-font.txt`), not covered by the fork license.
+- _Fork code_ — 0.11-dev port fixes, the kristal-i18n adapter, CI, and docs — is **dual-licensed MIT OR Apache-2.0, at your option**.
 - The split follows `git log`: every commit up to and including `Import MagicalGlassRedux v5.0.1 ...` is upstream; everything after is fork code. Files are not individually annotated.
 - Translations derived from upstream text fall under the upstream rights; fork-original translations are covered by the fork license.
