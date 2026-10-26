@@ -549,13 +549,13 @@ function LightBattleUI:drawState()
                     local spare_icon = false
                     local tired_icon = false
 
-                    if enemy.tired and enemy:canSpare() then
+                    if enemy:isTired() and enemy:canSpare() then
                         Draw.draw(self.sparestar, arena_ox + 98 + font_mono:getWidth(name) + 20, arena_oy + 8 + y_offset)
                         spare_icon = true
 
                         Draw.draw(self.tiredmark, arena_ox + 98 + font_mono:getWidth(name) + 40, arena_oy + 8 + y_offset)
                         tired_icon = true
-                    elseif enemy.tired then
+                    elseif enemy:isTired() then
                         Draw.draw(self.tiredmark, arena_ox + 98 + font_mono:getWidth(name) + 40, arena_oy + 8 + y_offset)
                         tired_icon = true
                     elseif enemy.mercy >= 100 then

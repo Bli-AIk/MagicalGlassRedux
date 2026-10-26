@@ -743,7 +743,7 @@ function LightBattle:processAction(action)
                 if act_enemy:canSpare() then
                     success = true
                 end
-                if act_enemy.tired then
+                if act_enemy:isTired() then
                     tired = true
                 end
                 act_enemy:onMercy(battler)
