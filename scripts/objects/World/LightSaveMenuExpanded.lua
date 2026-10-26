@@ -214,19 +214,19 @@ function LightSaveMenuExpanded:draw()
         love.graphics.print("LV" .. " " .. level, self.main_box.x + 210 - 34, self.main_box.y - 10 + 8)
 
         if Kristal.getLibConfig("magical-glass", "light_save_menu_hours") then
-            local hours = math.floor(data.playtime / 3600)
-            local minutes = math.floor(data.playtime / 60 % 60)
-            local seconds = math.floor(data.playtime % 60)
+            local hours = math.floor(playtime / 3600)
+            local minutes = math.floor(playtime / 60 % 60)
+            local seconds = math.floor(playtime % 60)
             local time_text = string.format("%d:%02d:%02d", hours, minutes, seconds)
             love.graphics.printf(time_text, self.main_box.x - 280 + 148, self.main_box.y - 10 + 8, 500, "right")
         else
-            local minutes = math.floor(data.playtime / 60)
-            local seconds = math.floor(data.playtime % 60)
+            local minutes = math.floor(playtime / 60)
+            local seconds = math.floor(playtime % 60)
             local time_text = string.format("%d:%02d", minutes, seconds)
             love.graphics.printf(time_text, self.main_box.x - 280 + 148, self.main_box.y - 10 + 8, 500, "right")
         end
 
-        love.graphics.print(data.room_name, self.main_box.x + 8, self.main_box.y + 38)
+        love.graphics.print(room_name, self.main_box.x + 8, self.main_box.y + 38)
 
         love.graphics.print("Save",   self.main_box.x + 30  + 8, self.main_box.y + 98)
         love.graphics.print("Return", self.main_box.x + 210 + 8, self.main_box.y + 98)
@@ -278,13 +278,14 @@ function LightSaveMenuExpanded:draw()
         local function drawOverwriteSave(data, x, y)
             local w = 478
             local mg = data.magical_glass or {}
+            local playtime = data.playtime or 0
 
             -- Header
             love.graphics.print(data.name, x + (w/2) - self.font:getWidth(data.name)/2, y)
             love.graphics.print("LV" .. " " .. (mg.save_level or Game.party[1] and Game.party[1]:getLightLV() or 0), x, y)
 
-            local minutes = math.floor(data.playtime / 60)
-            local seconds = math.floor(data.playtime % 60)
+            local minutes = math.floor(playtime / 60)
+            local seconds = math.floor(playtime % 60)
             local time_text = string.format("%d:%02d", minutes, seconds)
             love.graphics.print(time_text, x + w - self.font:getWidth(time_text), y)
 
@@ -343,6 +344,7 @@ function LightSaveMenuExpanded:drawSaveFile(index, data, x, y, selected, header)
         end
     else
         local mg = data.magical_glass or {}
+        local playtime = data.playtime or 0
         if header then
             love.graphics.print("LV" .. " " .. (Game.party[1] and Game.party[1]:getLightLV() or 0), x + 26, y + 6)
         elseif self.saved_file then
@@ -354,14 +356,14 @@ function LightSaveMenuExpanded:drawSaveFile(index, data, x, y, selected, header)
         love.graphics.print(data.name, x + (493 / 2) - self.font:getWidth(data.name) / 2, y + 6)
 
         if Kristal.getLibConfig("magical-glass", "light_save_menu_hours") then
-            local hours = math.floor(data.playtime / 3600)
-            local minutes = math.floor(data.playtime / 60 % 60)
-            local seconds = math.floor(data.playtime % 60)
+            local hours = math.floor(playtime / 3600)
+            local minutes = math.floor(playtime / 60 % 60)
+            local seconds = math.floor(playtime % 60)
             local time_text = string.format("%d:%02d:%02d", hours, minutes, seconds)
             love.graphics.print(time_text, x + 467 - self.font:getWidth(time_text), y + 6)
         else
-            local minutes = math.floor(data.playtime / 60)
-            local seconds = math.floor(data.playtime % 60)
+            local minutes = math.floor(playtime / 60)
+            local seconds = math.floor(playtime % 60)
             local time_text = string.format("%d:%02d", minutes, seconds)
             love.graphics.print(time_text, x + 467 - self.font:getWidth(time_text), y + 6)
         end
