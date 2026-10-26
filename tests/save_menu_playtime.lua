@@ -55,10 +55,10 @@ for _, hours in ipairs({ false, true }) do
     menu.saved_file = { playtime = 3661 }
     expect_time(saved_time, function() Undertale.draw(menu) end)
 
-    local expanded = {
+    local expanded = setmetatable({
         state = "MAIN", main_box = { x = 0, y = 0 }, selected_x = 1,
         font = font,
-    }
+    }, { __index = Expanded })
     preview = {}
     expect_time(empty_time, function() Expanded.draw(expanded) end)
     preview = { name = "CHARA", room_name = "Start", playtime = 3661 }
@@ -73,6 +73,12 @@ for _, hours in ipairs({ false, true }) do
         Expanded.drawSaveFile(expanded, 1, preview, 0, 0, false, false)
     end)
     Expanded.drawSaveFile(expanded, 2, nil, 0, 0, false, false)
+
+    preview = old_save
+    expanded.state = "OVERWRITE"
+    expanded.selected_y = 1
+    expanded.saves = { old_save }
+    expect_time(empty_time, function() Expanded.draw(expanded) end)
 end
 
 print("save menu playtime: PASS")
