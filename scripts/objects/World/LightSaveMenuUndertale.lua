@@ -84,9 +84,9 @@ function LightSaveMenuUndertale:draw()
     love.graphics.print("LV" .. " " .. level, self.box.x + 210 - 42, self.box.y - 10 + 8)
 
     if Kristal.getLibConfig("magical-glass", "light_save_menu_hours") then
-        local hours = math.floor(data.playtime / 3600)
-        local minutes = math.floor(data.playtime / 60 % 60)
-        local seconds = math.floor(data.playtime % 60)
+        local hours = math.floor(playtime / 3600)
+        local minutes = math.floor(playtime / 60 % 60)
+        local seconds = math.floor(playtime % 60)
         local time_text = string.format("%d:%02d:%02d", hours, minutes, seconds)
         love.graphics.printf(time_text, self.box.x - 280 + 148, self.box.y - 10 + 8, 500, "right")
     else
