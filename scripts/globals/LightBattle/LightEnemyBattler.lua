@@ -182,9 +182,9 @@ end
 function LightEnemyBattler:getDamageOffset() return self.damage_offset end
 
 function LightEnemyBattler:setTired(bool, hide_message)
-    local old_tired = self.tired
+    local old_tired = self:isTired()
     self.tired = bool
-    if self.tired then
+    if self:isTired() then
         if Kristal.getLibConfig("magical-glass", "tired_messages") and not old_tired and not hide_message then
             -- Check for self.parent so setting Tired state in init doesn't crash
             if self.parent then
@@ -192,10 +192,12 @@ function LightEnemyBattler:setTired(bool, hide_message)
                 Assets.playSound("spellcast", 0.5, 0.9)
             end
         end
+        self:onTired()
     else
         if Kristal.getLibConfig("magical-glass", "awake_messages") and old_tired and not hide_message then
             if self.parent then self:lightStatusMessage("text", "AWAKE", { 0 / 255, 178 / 255, 255 / 255 }) end
         end
+        self:onAwake()
     end
 end
 
@@ -351,7 +353,7 @@ function LightEnemyBattler:getSpareText(battler, success)
         return "* " .. battler.chara:getNameOrYou() .. " spared " .. self.name .. "."
     else
         local text = "* " .. battler.chara:getNameOrYou() .. " spared " .. self.name .. ".\n* But its name wasn't [color:" .. ColorUtils.RGBToHex(ColorUtils.unpackColor(Mod.libs["magical-glass"].spare_color[1])) .. "]" .. Mod.libs["magical-glass"].spare_color[2] .. "[color:reset]..."
-        if self.tired then
+        if self:isTired() then
             local found_spell = nil
             for _, party in ipairs(Game.battle.party) do
                 for _, spell in ipairs(party.chara:getSpells()) do
@@ -537,28 +539,51 @@ function LightEnemyBattler:getNameColors()
     if self:canSpare() then
         table.insert(result, Mod.libs["magical-glass"].spare_color[1])
     end
-    if self.tired then
+    if self:isTired() then
         table.insert(result, { 0, 0.7, 1, 1 })
     end
     return result
 end
 
+function LightEnemyBattler:isTired()
+    return self.tired
+end
+
+function LightEnemyBattler:hasLowHealth()
+    return self.health <= (self.max_health * self.low_health_percentage)
+end
+
+function LightEnemyBattler:onTired() end
+function LightEnemyBattler:onAwake() end
+
+function LightEnemyBattler:getSpareableText()
+    return self.spareable_text
+end
+
+function LightEnemyBattler:getLowHealthText()
+    return self.low_health_text
+end
+
+function LightEnemyBattler:getTiredText()
+    return self.tired_text
+end
+
 function LightEnemyBattler:getEncounterText()
-    local has_spareable_text = self.spareable_text and self:canSpare()
+    local has_spareable_text = self:getSpareableText() and self:canSpare()
 
     local priority_spareable_text = Game:getConfig("prioritySpareableText")
     if priority_spareable_text and has_spareable_text then
-        return self.spareable_text
+        return self:getSpareableText()
     end
 
-    if self.low_health_text and self.health <= (self.max_health * self.low_health_percentage) then
-        return self.low_health_text
+    if self:getLowHealthText() and self:hasLowHealth() then
+        return self:getLowHealthText()
 
-    elseif self.tired_text and self.tired then
-        return self.tired_text
+    elseif self:getTiredText() and self:isTired() then
+        return self:getTiredText()
 
     elseif has_spareable_text then
-        return self.spareable_text
+        return self:getSpareableText()
     end
 
     return TableUtils.pick(self.text)
@@ -884,9 +909,7 @@ function LightEnemyBattler:onHurt(damage, battler)
         self.sprite:setAnimation("hurt")
     end
 
-    if self.can_shake then
-        self:getActiveSprite():shake(6, 0, 0.4, 2 / 30)
-    end
+    self:applyDamageShake()
 
     Game.battle.timer:after(1 / 3, function()
         local sound = self:getDamageVoice()
@@ -902,6 +925,12 @@ function LightEnemyBattler:onHurt(damage, battler)
 
     if self.health <= (self.max_health * self.spare_percentage) then
         self.mercy = 100
+    end
+end
+
+function LightEnemyBattler:applyDamageShake()
+    if self.can_shake then
+        self:getActiveSprite():shake(6, 0, 0.4, 2 / 30)
     end
 end
 
