@@ -10,6 +10,14 @@ All notable changes to this fork are documented here, following
   engineVer bumped to v0.10.0. Imported at upstream commit `f182f69`,
   folder tree `b6684d0...`. Not released by this fork yet.
 
+## [0.2.1](https://github.com/Bli-AIk/MagicalGlassRedux/compare/v0.2.0...v0.2.1) (2026-10-27)
+
+
+### Bug Fixes
+
+* adapt light battles to Kristal eaf9e0e ([#12](https://github.com/Bli-AIk/MagicalGlassRedux/issues/12)) ([ca2627f](https://github.com/Bli-AIk/MagicalGlassRedux/commit/ca2627fbddb0eb7e4c9281f840f67a81583c77b4))
+* **save:** handle missing playtime in light save menus ([#11](https://github.com/Bli-AIk/MagicalGlassRedux/issues/11)) ([8c024d9](https://github.com/Bli-AIk/MagicalGlassRedux/commit/8c024d9132d416935086f9eae0a4cec512862d1f))
+
 ## [0.2.0](https://github.com/Bli-AIk/MagicalGlassRedux/compare/v0.1.0...v0.2.0) (2026-09-23)
 
 
